@@ -37,3 +37,7 @@ npm run build
 - `docs/`: architecture, decisions, implementation matrix and external dependencies
 
 The preview round uses 7–8 November 2026 demo kick-offs. Locks are intentionally real and date-bound; partner staff can publish a future six-fixture round through `/admin`. No real-world fixtures, F1 entrants, or scores are asserted.
+
+## GitHub staging
+
+The `staging` branch is configured for a free Cloudflare Workers staging deployment through `.github/workflows/staging.yml`. Create a GitHub environment named `staging` and add these secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, and `D1_DATABASE_ID`. The token needs Workers deployment and D1 access. Each push to `staging` builds the Vinext Worker, binds the staging D1 database, and deploys `luke-matchday-staging`.

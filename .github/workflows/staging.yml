@@ -1,0 +1,41 @@
+name: Deploy staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+    steps:
+      - name: Check out staging
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Worker bundle
+        run: npm run build
+
+      - name: Bind the staging D1 database
+        env:
+          D1_DATABASE_ID: ${{ secrets.D1_DATABASE_ID }}
+        run: |
+          node -e "const fs=require('fs'); const p='dist/server/wrangler.json'; const c=JSON.parse(fs.readFileSync(p,'utf8')); if(!process.env.D1_DATABASE_ID) throw new Error('Missing staging environment secret D1_DATABASE_ID'); for(const db of c.d1_databases ?? []) db.database_id=process.env.D1_DATABASE_ID; fs.writeFileSync(p, JSON.stringify(c));"
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --config dist/server/wrangler.json --name luke-matchday-staging
