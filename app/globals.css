@@ -2864,6 +2864,68 @@ a svg {
     line-height: 1.6;
   }
 }
+
+/* Reversible BOTB-inspired concept skin: public visual cues only (black, white,
+   orange, promotional tiles and condensed uppercase type). Luke's game rules,
+   account boundaries and data model remain unchanged. */
+.theme-switch{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font:8px var(--mono);letter-spacing:.3px;color:#6c7964;white-space:nowrap}
+.theme-switch:hover{border-color:#9cae87;background:#eef0e4}
+.theme-switch-dot{width:7px;height:7px;border-radius:50%;background:#78945f;box-shadow:0 0 0 2px #e0e6d3}
+.theme-botb{--paper:#f4f4f4;--panel:#fff;--ink:#171717;--muted:#666;--green:#171717;--lime:#ff8200;--line:#dedede;--signal-600:#ff8200;--signal-700:#ce5e00}
+.theme-botb .sidebar{background:#fff;border-right:1px solid #e4e4e4}
+.theme-botb .brand,.theme-botb .brand-star{color:#171717}
+.theme-botb .brand-star{color:#ff8200}
+.theme-botb .nav-link.active{background:#171717;color:#fff;border-radius:0;text-transform:uppercase}
+.theme-botb .nav-link.active .nav-count{background:#ff8200;color:#171717}
+.theme-botb .nav-link,.theme-botb .sport-link{border-radius:0;text-transform:uppercase;letter-spacing:.2px}
+.theme-botb .sport-link.selected{color:#171717;border-left:4px solid #ff8200;padding-left:9px}
+.theme-botb .green-dot,.theme-botb .live-dot,.theme-botb .demo-dot{background:#ff8200}
+.theme-botb .club-note{background:#171717;color:#fff;border:0;border-radius:0}
+.theme-botb .club-note p,.theme-botb .club-note button{color:#f2f2f2}
+.theme-botb .topbar{background:#fff;border-bottom-color:#dedede}
+.theme-botb .demo-badge{border-color:#ff8200;color:#171717}
+.theme-botb .demo-badge>span{background:#ff8200}
+.theme-botb .theme-switch{background:#171717;border-color:#171717;color:#fff}
+.theme-botb .theme-switch-dot{background:#ff8200;box-shadow:0 0 0 2px #5b2e0f}
+.theme-botb .section-eyebrow{color:#777;text-transform:uppercase}
+.theme-botb .hero{border-radius:0;background:#171717;min-height:300px}
+.theme-botb .hero-shade{background:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.7) 48%,rgba(0,0,0,.15))}
+.theme-botb .hero>img{filter:grayscale(1) contrast(1.15) brightness(.55);width:65%}
+.theme-botb .hero h1{font-family:var(--display);text-transform:uppercase;letter-spacing:.4px}
+.theme-botb .hero h1 span{color:#ff8200}
+.theme-botb .hero-eyebrow,.theme-botb .hero-link{color:#ff8200}
+.theme-botb .hero-stamp{border-color:#ff8200;color:#ff8200;border-radius:2px;transform:rotate(-4deg)}
+.theme-botb .hero-stamp b,.theme-botb .hero-stamp>span:first-child{color:#fff}
+.theme-botb .matchday-ticker{border-radius:0;background:#fff;border-color:#dedede}
+.theme-botb .issue{color:#ff8200}
+.theme-botb .fixture-card,.theme-botb .standings-card,.theme-botb .page-panel,.theme-botb .league-card,.theme-botb .result-card{border-radius:0;background:#fff;border-color:#d8d8d8}
+.theme-botb .fixture-card:before{background:#ff8200}
+.theme-botb .fixture-card.is-complete:before{background:#171717}
+.theme-botb .fixture-top,.theme-botb .first-scorer>div:first-child{color:#777;text-transform:uppercase}
+.theme-botb .score-compartment{background:#f0f0f0;border-color:#d8d8d8;border-radius:0}
+.theme-botb .score-compartment input{color:#171717}
+.theme-botb .first-options button{border-radius:0;background:#f7f7f7}
+.theme-botb .first-options button.selected{background:#ff8200;border-color:#ff8200;color:#171717}
+.theme-botb .league-promo{border-radius:0;background:#ff8200;border-color:#ff8200;color:#171717}
+.theme-botb .league-promo p,.theme-botb .league-promo .eyebrow{color:#171717}
+.theme-botb .mini-pitch{border-color:#171717}
+.theme-botb .points-note>div{border-color:#d6d6d6}
+.theme-botb .submit-dock{border-radius:0;background:#171717;border-color:#171717;color:#fff}
+.theme-botb .submit-dock .dock-copy>span,.theme-botb .dock-progress>b>span{color:#c9c9c9}
+.theme-botb .primary{background:#ff8200;color:#171717;border-radius:0;text-transform:uppercase;font-weight:700}
+.theme-botb .primary:hover{background:#ff9c38}
+.theme-botb .secondary{border-radius:0;border-color:#171717}
+.theme-botb .eyebrow,.theme-botb .page-title .eyebrow{color:#777;text-transform:uppercase}
+.theme-botb .page-title h1,.theme-botb .section-heading h2{font-family:var(--display);text-transform:uppercase}
+.theme-botb .tabs button.active{background:#171717;color:#fff;border-radius:0}
+.theme-botb .tabs{border-radius:0}
+.theme-botb .sample-notice{border-radius:0;background:#fff7ef;border-color:#ffb36f}
+.theme-botb .modal{border-radius:0;background:#fff;color:#171717}
+.theme-botb .modal-kicker{color:#ff8200}
+.theme-botb .modal h2{font-family:var(--display);text-transform:uppercase}
+.theme-botb .modal .primary{background:#ff8200}
+.theme-botb .footer .brand{color:#171717}
+@media(max-width:760px){.theme-switch{font-size:7px;padding:6px 7px}.theme-botb .hero{min-height:280px}.theme-botb .hero>img{width:100%}}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

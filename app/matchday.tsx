@@ -105,6 +105,7 @@ export default function Matchday() {
     [field, setField] = useState(""),
     [formError, setFormError] = useState(""),
     [league, setLeague] = useState<League | null>(null),
+    [theme, setTheme] = useState<"luke" | "botb">("luke"),
     [now, setNow] = useState(Date.now());
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({}),
     pending = useRef<Set<Promise<unknown>>>(new Set()),
@@ -132,6 +133,10 @@ export default function Matchday() {
     const id = setInterval(() => setNow(Date.now()), 30000);
     return () => clearInterval(id);
   }, [load]);
+  useEffect(() => {
+    const saved = window.localStorage.getItem("luke-ui-theme");
+    if (saved === "botb" || saved === "luke") setTheme(saved);
+  }, []);
   useEffect(() => {
     if (toast) {
       const id = setTimeout(() => setToast(""), 4000);
@@ -162,6 +167,12 @@ export default function Matchday() {
   const open = (m: string) => {
     setField("");
     setModal(m);
+  };
+  const toggleTheme = () => {
+    const next = theme === "luke" ? "botb" : "luke";
+    setTheme(next);
+    window.localStorage.setItem("luke-ui-theme", next);
+    setToast(next === "botb" ? "Concept skin on — Luke game rules unchanged." : "Luke Matchprint skin restored.");
   };
   const mutate = async (body: unknown) => {
     const r = await fetch("/api/game", {
@@ -272,7 +283,7 @@ export default function Matchday() {
         JSON.stringify(picks[f.id]),
     );
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${theme === "botb" ? "theme-botb" : ""}`}>
       <a className="skip" href="#main">
         Skip to main content
       </a>
@@ -386,6 +397,10 @@ export default function Matchday() {
             <b>{page}</b>
           </div>
           <div className="header-right">
+            <button className="theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
+              <span className="theme-switch-dot" />
+              {theme === "botb" ? "BOTB-inspired concept" : "Luke Matchprint"}
+            </button>
             <span className="demo-badge">
               <span /> DEMO SEASON
             </span>
