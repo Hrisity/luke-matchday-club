@@ -6,3 +6,6 @@
 - Added labelled sample leaderboard/results screens and an explicit Formula 1 coming-soon screen.
 - Verified the domain engine, API flows, migration, desktop and narrow mobile UI. Corrected 320px hero clipping and increased control text sizes.
 - Documented all known production gaps; no production-readiness claim.
+- Updated football to six fixtures and 42-point scoring: 5 exact, 2 correct outcome, 2 first scorer.
+- Added configurable Formula 1 game with six 5-point predictions and a separate pit-first tiebreak.
+- Added tenant-scoped partner Game CMS with staff authorization, schema validation, future-deadline checks, compare-and-swap publishing, and immutable revisions.

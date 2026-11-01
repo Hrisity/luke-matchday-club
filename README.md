@@ -1,6 +1,6 @@
 # Luke — The prediction club
 
-A working, privately hosted first slice of the Luke master brief. Football picks, account-backed saved drafts, review and submission receipts, private league creation/joining, profile naming, and labelled sample results/leaderboards.
+A working, privately hosted first slice of the Luke master brief. Football picks for six fixtures (5 exact, 2 outcome, 2 first scorer), a Formula 1 prediction game, account-backed saved drafts, review and submission receipts, private league creation/joining, profile naming, labelled sample results/leaderboards, and a staff-only configurable Game CMS.
 
 **This is not yet the full commercial platform.** See `docs/IMPLEMENTATION_MATRIX.md` for implemented and outstanding work. No live fixtures, payment service, partner SSO or admin console is implied.
 
@@ -36,4 +36,4 @@ npm run build
 - `db/schema.ts`, `drizzle/`: durable D1 storage and migrations
 - `docs/`: architecture, decisions, implementation matrix and external dependencies
 
-The preview round uses 7–8 November 2026 demo kick-offs. Locks are intentionally real and date-bound; seed a new demo round instead of bypassing server locks once it expires. No real-world fixtures or scores are asserted.
+The preview round uses 7–8 November 2026 demo kick-offs. Locks are intentionally real and date-bound; partner staff can publish a future six-fixture round through `/admin`. No real-world fixtures, F1 entrants, or scores are asserted.

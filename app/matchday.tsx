@@ -28,7 +28,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import {
-  fixtures,
+  fixtures as defaultFixtures,
   emptyPick,
   validatePick,
   isLocked,
@@ -36,6 +36,8 @@ import {
   type Pick,
   type Fixture,
 } from "../lib/game";
+import { defaultConfig, type GameConfig } from "../lib/config";
+import F1Game from "./f1-game";
 type Page = "Matchday" | "Leaderboard" | "My leagues" | "Results" | "Formula 1";
 type League = { id: string; name: string; code: string; count: number };
 type Receipt = { receipt: string; submitted: string; snapshot: string };
@@ -44,6 +46,8 @@ type Data = {
   picks: Record<string, Pick>;
   receipt: Receipt | null;
   leagues: League[];
+  config?: GameConfig;
+  revision?: number;
 };
 const initial: Data = { user: null, picks: {}, receipt: null, leagues: [] };
 const nav = [
@@ -140,6 +144,12 @@ export default function Matchday() {
       dialog.current?.showModal();
     } else dialog.current?.close();
   }, [modal]);
+  const fixtures = data.config?.football.fixtures || defaultFixtures;
+  const roundTitle =
+    data.config?.football.title || defaultConfig.football.title;
+  const firstKickoff = fixtures.reduce((a, b) =>
+    a.kickoff < b.kickoff ? a : b,
+  ).kickoff;
   const done = fixtures.filter(
     (f) => picks[f.id] && validatePick(picks[f.id]),
   ).length;
@@ -170,7 +180,14 @@ export default function Matchday() {
   };
   const persist = (id: string, p: Pick) => {
     const work = (queues.current[id] || Promise.resolve())
-      .then(() => mutate({ action: "draft", fixture: id, pick: p }))
+      .then(() =>
+        mutate({
+          action: "draft",
+          fixture: id,
+          pick: p,
+          revision: data.revision ?? 0,
+        }),
+      )
       .then(() => setSaveState("Draft saved"))
       .catch((e) => setSaveState(e.message))
       .finally(() => pending.current.delete(work));
@@ -201,7 +218,11 @@ export default function Matchday() {
     try {
       Object.values(timers.current).forEach(clearTimeout);
       await Promise.all(pending.current);
-      const r = await mutate({ action: "submit", picks: latest.current });
+      const r = await mutate({
+        action: "submit",
+        picks: latest.current,
+        revision: data.revision ?? 0,
+      });
       setData({ ...data, receipt: r.receipt });
       setModal("receipt");
       setSaveState("Predictions submitted");
@@ -285,7 +306,7 @@ export default function Matchday() {
             >
               <Icon size={19} />
               <span>{title}</span>
-              {title === "Matchday" && <span className="nav-count">8</span>}
+              {title === "Matchday" && <span className="nav-count">6</span>}
             </button>
           ))}
         </nav>
@@ -309,8 +330,12 @@ export default function Matchday() {
           }}
         >
           <Flag size={17} />
-          Formula 1<span className="soon">SOON</span>
+          Formula 1<span className="green-dot" />
         </button>
+        <a className="side-help" href="/admin">
+          <Settings2 size={18} />
+          Game CMS <ArrowUpRight size={15} />
+        </a>
         <div className="sidebar-bottom">
           <div className="club-note">
             <Ticket size={24} />
@@ -418,7 +443,7 @@ export default function Matchday() {
                     <br />
                     Your <span>call.</span>
                   </h1>
-                  <p>Eight matches. Big opinions. Make yours count.</p>
+                  <p>Six matches. Big opinions. Make yours count.</p>
                   <button
                     className="hero-link"
                     onClick={() =>
@@ -443,23 +468,23 @@ export default function Matchday() {
                 <span className="ticker-round">
                   <span className="issue">11</span>
                   <span>
-                    <b>Matchweek 11</b>
-                    <small>7–8 NOVEMBER 2026 · DEMO FIXTURES</small>
+                    <b>{roundTitle}</b>
+                    <small>SIX SELECTED FIXTURES · DEMO</small>
                   </span>
                 </span>
                 <span className="ticker-detail">
                   <Goal size={19} />
                   <span>
-                    <b>8 matches</b>
-                    <small>48 points up for grabs</small>
+                    <b>6 matches</b>
+                    <small>42 points up for grabs</small>
                   </span>
                 </span>
                 <span className="ticker-detail deadline">
                   <Clock3 size={19} />
                   <span>
                     <b>
-                      {now < Date.parse(fixtures[0].kickoff)
-                        ? "First kick-off: Sat, 12:30"
+                      {now < Date.parse(firstKickoff)
+                        ? `First kick-off: ${new Date(firstKickoff).toLocaleString("en-GB", { weekday: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" })}`
                         : "Round in progress"}
                     </b>
                     <small>Each pick locks at kick-off · UK time</small>
@@ -484,21 +509,21 @@ export default function Matchday() {
                       </h2>
                     </div>
                     <span
-                      className={`completion ${done === 8 ? "complete" : ""}`}
+                      className={`completion ${done === 6 ? "complete" : ""}`}
                     >
-                      {done === 8 ? (
+                      {done === 6 ? (
                         <CheckCheck size={15} />
                       ) : (
                         <span
                           className="progress-mini"
                           style={
                             {
-                              "--progress": `${(done / 8) * 100}%`,
+                              "--progress": `${(done / 6) * 100}%`,
                             } as React.CSSProperties
                           }
                         />
                       )}{" "}
-                      {done} / 8 complete
+                      {done} / 6 complete
                     </span>
                   </div>
                   <div className="fixture-info">
@@ -602,9 +627,9 @@ export default function Matchday() {
                       <b>PTS</b>
                     </div>
                     <div>
-                      <strong>+1</strong>
+                      <strong>+2</strong>
                       <span>First team to score</span>
-                      <b>PT</b>
+                      <b>PTS</b>
                     </div>
                     <p>
                       Exact score or outcome points, plus your first-scorer
@@ -621,20 +646,20 @@ export default function Matchday() {
                   <b>
                     {receiptCurrent
                       ? "Your picks are in. Bring on matchday."
-                      : done === 8
+                      : done === 6
                         ? "Looking good. Ready to call it?"
                         : "A little instinct. A little football knowledge."}
                   </b>
                   <span>
                     {receiptCurrent
                       ? "You can edit until the first fixture kicks off."
-                      : `${8 - done} ${8 - done === 1 ? "prediction" : "predictions"} to go. Your weekend starts here.`}
+                      : `${6 - done} ${6 - done === 1 ? "prediction" : "predictions"} to go. Your weekend starts here.`}
                   </span>
                 </div>
                 <div className="dock-progress">
                   <b>
                     {done}
-                    <span> / 8</span>
+                    <span> / 6</span>
                   </b>
                   <div>
                     {fixtures.map((f) => (
@@ -653,16 +678,14 @@ export default function Matchday() {
                   className="primary"
                   onClick={() => {
                     if (receiptCurrent) open("receipt");
-                    else if (done !== 8) {
+                    else if (done !== 6) {
                       const f = fixtures.find(
                         (f) => !picks[f.id] || !validatePick(picks[f.id]),
                       );
-                      document
-                        .getElementById(f!.id)
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "center",
-                        });
+                      document.getElementById(f!.id)?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                      });
                       setToast(
                         "Choose a score and first-scoring team for each match.",
                       );
@@ -869,10 +892,10 @@ export default function Matchday() {
                   MATCHWEEK 10 · DEMO RESULTS
                 </span>
                 <strong>
-                  37 <small>/ 48 PTS</small>
+                  35 <small>/ 42 PTS</small>
                 </strong>
                 <span>
-                  5 exact scores <span className="green-dot" /> 6 first-scorer
+                  5 exact scores <span className="green-dot" /> 4 first-scorer
                   hits
                 </span>
               </div>
@@ -899,7 +922,7 @@ export default function Matchday() {
                     p = picks[i];
                   const exact = p.home === r.home && p.away === r.away;
                   const points =
-                    (exact ? 5 : 2) + (p.first === r.first ? 1 : 0);
+                    (exact ? 5 : 2) + (p.first === r.first ? 2 : 0);
                   return (
                     <div className="result-card" key={f.id}>
                       <div className="fixture-top">
@@ -944,37 +967,7 @@ export default function Matchday() {
               </p>
             </>
           ) : (
-            <>
-              <PageTitle
-                eyebrow="A NEW KIND OF RACE WEEKEND"
-                title="Same instincts. Different track."
-                text="Formula 1 is coming to the Luke clubhouse."
-              />
-              <section className="f1-panel">
-                <Flag size={54} />
-                <span className="eyebrow">IN THE GARAGE</span>
-                <h2>
-                  We’re getting
-                  <br />
-                  race ready.
-                </h2>
-                <p>
-                  Grid predictions, podium calls, and a little friendly
-                  competition.
-                  <br />
-                  Football is ready to play while we build the next chapter.
-                </p>
-                <button
-                  className="primary"
-                  onClick={() => {
-                    setSport("Football");
-                    move("Matchday");
-                  }}
-                >
-                  Back to matchday <ArrowRight size={17} />
-                </button>
-              </section>
-            </>
+            <F1Game />
           )}
           <footer className="footer">
             <span>
@@ -1016,8 +1009,8 @@ export default function Matchday() {
               Simple rules.
             </h2>
             <p>
-              For each of the eight matches, predict the final score and which
-              team scores first. Up to 48 points each round.
+              For each of the six matches, predict the final score and which
+              team scores first. Up to 42 points each round.
             </p>
             <div className="rule-row">
               <strong>5</strong>
@@ -1036,12 +1029,12 @@ export default function Matchday() {
               <span>POINTS</span>
             </div>
             <div className="rule-row">
-              <strong>+1</strong>
+              <strong>+2</strong>
               <div>
                 <b>Know who strikes first.</b>
                 <p>Home, away, or neither for a 0–0.</p>
               </div>
-              <span>POINT</span>
+              <span>POINTS</span>
             </div>
             <div className="modal-note">
               <Clock3 size={18} />
@@ -1132,7 +1125,11 @@ export default function Matchday() {
               {busy ? "Submitting…" : "Submit my predictions"}
             </button>
             <p className="fine-print">
-              Demo round · First lock: 7 November 2026, 12:30 UK time.
+              Demo round · First lock:{" "}
+              {new Date(firstKickoff).toLocaleString("en-GB", {
+                timeZone: "Europe/London",
+              })}{" "}
+              UK time.
             </p>
           </>
         ) : null}
@@ -1333,7 +1330,7 @@ export default function Matchday() {
               <div>
                 <b>Matchweek 11 is open.</b>
                 <p>
-                  Eight demo fixtures are ready for your predictions. First
+                  Six demo fixtures are ready for your predictions. First
                   kick-off: 7 November, 12:30 UK time.
                 </p>
               </div>
@@ -1370,7 +1367,8 @@ export default function Matchday() {
             <p>
               Live sports data, native identity, partner SSO, client and
               platform consoles, payments, and production operations are still
-              to be implemented. Formula 1 is planned.
+              to be implemented. Formula 1 predictions use fictional demo
+              entrants.
             </p>
             <p className="fine-print">
               Stadium photography: Unsplash. Team monograms are original
@@ -1459,7 +1457,14 @@ function FixtureCard({
         <span className="fixture-number">
           {String(index + 1).padStart(2, "0")}
           <span className="fixture-top-rule" />{" "}
-          {index < 4 ? "SAT 07 NOV" : "SUN 08 NOV"}
+          {new Date(f.kickoff)
+            .toLocaleDateString("en-GB", {
+              weekday: "short",
+              day: "2-digit",
+              month: "short",
+              timeZone: "Europe/London",
+            })
+            .toUpperCase()}
         </span>
         <span>
           {locked ? (
@@ -1525,10 +1530,15 @@ function FixtureCard({
           <small>{f.a}</small>
         </div>
       </div>
+      <p className="winner-summary">
+        Predicted outcome:{" "}
+        <b>{p.home === p.away ? "Draw" : p.home > p.away ? f.home : f.away}</b>
+        <small>From your scoreline · 2 pts if not exact</small>
+      </p>
       <div className="first-scorer">
         <div>
           <span>WHO SCORES FIRST?</span>
-          <span>+1 PT</span>
+          <span>+2 PTS</span>
         </div>
         <div className="first-options">
           {(

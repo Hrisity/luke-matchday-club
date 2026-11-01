@@ -8,6 +8,13 @@
       "when": 1793459395588,
       "tag": "0000_broken_bloodaxe",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1793460575370,
+      "tag": "0001_omniscient_synch",
+      "breakpoints": true
     }
   ]
 }

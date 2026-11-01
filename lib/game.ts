@@ -12,7 +12,7 @@ export type Fixture = {
   venue: string;
 };
 export const TENANT = "luke-owned";
-export const ROUND = "demo-2026-11";
+export const ROUND = "demo-football-v2";
 export const fixtures: Fixture[] = [
   {
     id: "f1",
@@ -80,28 +80,6 @@ export const fixtures: Fixture[] = [
     kickoff: "2026-11-08T14:00:00Z",
     venue: "East London",
   },
-  {
-    id: "f7",
-    home: "Crystal Palace",
-    away: "Brentford",
-    h: "CRY",
-    a: "BRE",
-    hc: "#4c649a",
-    ac: "#b94e48",
-    kickoff: "2026-11-08T14:00:00Z",
-    venue: "South London",
-  },
-  {
-    id: "f8",
-    home: "Wolves",
-    away: "Nottingham Forest",
-    h: "WOL",
-    a: "NFO",
-    hc: "#a57923",
-    ac: "#b54141",
-    kickoff: "2026-11-08T16:30:00Z",
-    venue: "Wolverhampton",
-  },
 ];
 export function emptyPick(): Pick {
   return { home: 0, away: 0, first: null };
@@ -130,7 +108,7 @@ export function scorePick(p: Pick, r: Pick) {
   const outcome = Math.sign(p.home - p.away) === Math.sign(r.home - r.away);
   const first = p.first === r.first;
   return {
-    points: (exact ? 5 : outcome ? 2 : 0) + (first ? 1 : 0),
+    points: (exact ? 5 : outcome ? 2 : 0) + (first ? 2 : 0),
     exact,
     outcome,
     first,

@@ -1,13 +1,8 @@
 import { env } from "cloudflare:workers";
 import { getChatGPTUser } from "../../chatgpt-auth";
-import {
-  fixtures,
-  TENANT,
-  ROUND,
-  validatePick,
-  type Pick,
-} from "../../../lib/game";
+import { TENANT, validatePick, type Pick } from "../../../lib/game";
 import { z } from "zod";
+import { readConfig, roundId } from "../../../lib/config-server";
 export const dynamic = "force-dynamic";
 const json = (data: unknown, status = 200) =>
   Response.json(data, { status, headers: { "Cache-Control": "no-store" } });
@@ -22,9 +17,14 @@ const mutation = z.discriminatedUnion("action", [
   z.object({
     action: z.literal("draft"),
     fixture: z.string(),
+    revision: z.number().int().min(0),
     pick: pickSchema,
   }),
-  z.object({ action: z.literal("submit"), picks: z.record(pickSchema) }),
+  z.object({
+    action: z.literal("submit"),
+    picks: z.record(pickSchema),
+    revision: z.number().int().min(0),
+  }),
   z.object({
     action: z.literal("createLeague"),
     name: z.string().trim().min(3).max(40),
@@ -41,8 +41,16 @@ const mutation = z.discriminatedUnion("action", [
 export async function GET() {
   try {
     const user = await getChatGPTUser();
+    const current = await readConfig();
+    const ROUND = roundId(current.revision, "football");
     if (!user)
-      return json({ user: null, picks: {}, receipt: null, leagues: [] });
+      return json({
+        ...current,
+        user: null,
+        picks: {},
+        receipt: null,
+        leagues: [],
+      });
     const db = env.DB!;
     const [p, s, l, profile] = await Promise.all([
       db
@@ -69,6 +77,7 @@ export async function GET() {
         .first(),
     ]);
     return json({
+      ...current,
       user: { name: profile?.name || user.fullName || "Matchday fan" },
       picks: Object.fromEntries(
         p.results.map((x) => [
@@ -111,16 +120,21 @@ export async function POST(request: Request) {
       )
       .bind(crypto.randomUUID(), TENANT, uid, b.action, now);
     if (b.action === "draft" || b.action === "submit") {
+      const current = await readConfig();
+      if (b.revision !== current.revision)
+        return json({ error: "The round changed. Reload before saving." }, 409);
+      const fixtures = current.config.football.fixtures,
+        ROUND = roundId(current.revision, "football");
       const data = b.action === "draft" ? { [b.fixture]: b.pick } : b.picks;
       if (
         b.action === "submit" &&
-        (Object.keys(data).length !== 8 ||
+        (Object.keys(data).length !== 6 ||
           !fixtures.every(
             (f) => data[f.id] && validatePick(data[f.id] as Pick),
           ))
       )
         return json(
-          { error: "Complete all eight scorelines and first-scoring teams." },
+          { error: "Complete all six scorelines and first-scoring teams." },
           422,
         );
       const statements = [];
@@ -180,7 +194,8 @@ export async function POST(request: Request) {
               receipt,
               snapshot,
               now,
-              fixtures[0].kickoff,
+              fixtures.reduce((a, b) => (a.kickoff < b.kickoff ? a : b))
+                .kickoff,
             ),
         );
       }

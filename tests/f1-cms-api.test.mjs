@@ -1,0 +1,27 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+const base='http://127.0.0.1:5173';
+const login=await fetch(base+'/signin-with-chatgpt?return_to=/',{redirect:'manual'}),cookie=login.headers.get('set-cookie')?.split(';')[0];
+const get=async(path,auth=true)=>fetch(base+path,{headers:auth?{cookie}:{}});
+const post=async(path,body,auth=true)=>fetch(base+path,{method:'POST',headers:{origin:base,'Content-Type':'application/json',...(auth?{cookie}:{})},body:JSON.stringify(body)});
+const current=await (await get('/api/f1')).json();
+const answers={winner:'d1',second:'d2',third:'d3',pole:'d1',fastest:'d2',team:'t1',pitFirst:'t2'};
+test('F1 rejects anonymous submissions',async()=>assert.equal((await post('/api/f1',{answers,revision:current.revision},false)).status,401));
+test('F1 duplicate podium drivers rejected',async()=>assert.equal((await post('/api/f1',{answers:{...answers,second:'d1'},revision:current.revision})).status,422));
+test('F1 unregistered driver rejected',async()=>assert.equal((await post('/api/f1',{answers:{...answers,winner:'forged'},revision:current.revision})).status,422));
+test('F1 stale configuration rejected',async()=>assert.equal((await post('/api/f1',{answers,revision:-1})).status,409));
+test('F1 receipt persists; repeat submission idempotent',async()=>{const a=await post('/api/f1',{answers,revision:current.revision});assert.equal(a.status,200);const one=await a.json();const two=await (await post('/api/f1',{answers,revision:current.revision})).json();assert.equal(one.receipt,two.receipt);const saved=await (await get('/api/f1')).json();assert.deepEqual(saved.saved.answers,answers);assert.equal((await (await get('/api/f1',false)).json()).saved,null)});
+test('CMS is inaccessible to anonymous visitors and unprovisioned users',async()=>{assert.equal((await get('/api/admin',false)).status,401);assert.equal((await get('/api/admin?tenant=unprovisioned-'+Date.now())).status,403)});
+test('CMS tenant authorization, version conflict, and immutable history',async()=>{
+ const tenant='qa-tenant-'+Date.now();
+ execFileSync(process.execPath,['--import','./scripts/sites-env.mjs','./node_modules/wrangler/bin/wrangler.js','d1','execute','DB','--local','--config','dist/server/wrangler.json','--persist-to','.wrangler/state','--command',`INSERT INTO staff_memberships(tenant,user,role) VALUES('${tenant}','local_seedy','competition_manager')`],{stdio:'pipe'});
+ assert.equal((await get('/api/admin?tenant=luke-owned')).status,403);
+ const cms=await (await get('/api/admin?tenant='+tenant)).json();assert.equal(cms.revision,0);
+ const body={tenant,expectedRevision:0,config:cms.config};
+ assert.equal((await post('/api/admin',{...body,tenant:'luke-owned'})).status,403);
+ assert.equal((await post('/api/admin',{...body,config:{...cms.config,football:{...cms.config.football,fixtures:cms.config.football.fixtures.slice(1)}}})).status,422);
+ const first=await post('/api/admin',body);assert.equal(first.status,200);assert.equal((await post('/api/admin',body)).status,409);
+ const latest=await (await get('/api/admin?tenant='+tenant)).json();assert.equal(latest.history.length,1);assert.equal(latest.revision,1);
+ assert.equal((await (await get('/api/game')).json()).revision,current.revision);
+});

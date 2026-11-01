@@ -65,3 +65,37 @@ export const events = sqliteTable("events", {
   action: text("action").notNull(),
   at: text("at").notNull(),
 });
+
+export const gameConfigs = sqliteTable(
+  "game_configs",
+  {
+    tenant: text("tenant").notNull(),
+    revision: integer("revision").notNull(),
+    config: text("config").notNull(),
+    rules: text("rules").notNull(),
+    published: text("published").notNull(),
+    actor: text("actor").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.tenant, t.revision] })],
+);
+export const staff = sqliteTable(
+  "staff_memberships",
+  {
+    tenant: text("tenant").notNull(),
+    user: text("user").notNull(),
+    role: text("role").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.tenant, t.user] })],
+);
+export const racePicks = sqliteTable(
+  "race_picks",
+  {
+    tenant: text("tenant").notNull(),
+    user: text("user").notNull(),
+    round: text("round").notNull(),
+    answers: text("answers").notNull(),
+    receipt: text("receipt").notNull(),
+    submitted: text("submitted").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.tenant, t.user, t.round] })],
+);
