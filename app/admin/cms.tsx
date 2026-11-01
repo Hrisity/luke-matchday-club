@@ -355,6 +355,7 @@ export default function Cms() {
                       </p>
                       {config.f1[kind].map((v, i) => (
                         <div className={`entrant-row ${kind === "drivers" ? "driver-row" : ""}`} key={v.id}>
+                          {kind === "drivers" && (v.image ? <img className="cms-entrant-image" src={v.image} alt="" /> : <span className="cms-entrant-image cms-entrant-placeholder">?</span>)}
                           <label>
                             {kind === "drivers" ? "Driver" : "Team"} {i + 1}
                             <input

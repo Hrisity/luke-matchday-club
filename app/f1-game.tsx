@@ -114,6 +114,33 @@ export default function F1Game() {
         <p role="status">Loading your race…</p>
       ) : (
         <>
+          <section className="driver-grid" aria-label="2026 F1 driver grid">
+            <div className="driver-grid-heading">
+              <span className="eyebrow">THE 2026 GRID</span>
+              <span>{data.config.f1.drivers.length} drivers · current roster</span>
+            </div>
+            <div className="driver-grid-list">
+              {data.config.f1.drivers.map((d) => (
+                <button
+                  type="button"
+                  className="driver-tile"
+                  key={d.id}
+                  onClick={() => {
+                    const next = { ...answers };
+                    const target = f1Fields.find((f) => f.kind === "driver" && !answers[f.key]);
+                    next[target?.key || "winner"] = d.id;
+                    setAnswers(next);
+                    setReview(false);
+                  }}
+                  disabled={locked || busy}
+                  title={`Use ${d.name}`}
+                >
+                  {d.image ? <img src={d.image} alt="" /> : <span className="driver-tile-placeholder"><Flag size={18} /></span>}
+                  <span><b>{d.name}</b><small>{d.team}</small></span>
+                </button>
+              ))}
+            </div>
+          </section>
           <div className="race-grid">
             {f1Fields.map((f, i) => (
               <label
