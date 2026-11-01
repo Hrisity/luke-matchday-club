@@ -13,6 +13,7 @@ import {
   Users,
   Flag,
   Goal,
+  Star,
   Ticket,
   HelpCircle,
   Settings2,
@@ -315,7 +316,7 @@ export default function Matchday() {
               }}
               aria-current={page === title ? "page" : undefined}
             >
-              <Icon size={19} />
+              {theme === "botb" ? <span className="concept-category-icon">{title === "Matchday" ? <Star size={26} /> : <Icon size={26} />}</span> : <Icon size={19} />}
               <span>{title}</span>
               {title === "Matchday" && <span className="nav-count">6</span>}
             </button>
@@ -330,7 +331,7 @@ export default function Matchday() {
             move("Matchday");
           }}
         >
-          <span className="ball-icon">◉</span>Football
+          {theme === "botb" ? <span className="concept-category-icon"><Goal size={26} /></span> : <span className="ball-icon">◉</span>}Football
           <span className="green-dot" />
         </button>
         <button
@@ -340,7 +341,7 @@ export default function Matchday() {
             move("Formula 1");
           }}
         >
-          <Flag size={17} />
+          {theme === "botb" ? <span className="concept-category-icon"><Flag size={26} /></span> : <Flag size={17} />}
           Formula 1<span className="green-dot" />
         </button>
         <a className="side-help" href="/admin">

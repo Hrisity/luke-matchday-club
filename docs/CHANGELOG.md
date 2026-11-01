@@ -10,3 +10,4 @@
 - Added configurable Formula 1 game with six 5-point predictions and a separate pit-first tiebreak.
 - Added tenant-scoped partner Game CMS with staff authorization, schema validation, future-deadline checks, compare-and-swap publishing, and immutable revisions.
 - Added a reversible BOTB-inspired concept skin switch (black, white, orange, promotional tile treatment) that preserves the Luke Matchprint skin and game rules.
+- Refined the alternate skin from measured BOTB styles: Jost headings/categories, Roboto controls, 24px spacing, 4–5px control corners, and 32px orange/gold category icons. Kept refinements scoped to the alternate skin.
