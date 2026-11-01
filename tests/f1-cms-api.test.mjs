@@ -6,7 +6,8 @@ const login=await fetch(base+'/signin-with-chatgpt?return_to=/',{redirect:'manua
 const get=async(path,auth=true)=>fetch(base+path,{headers:auth?{cookie}:{}});
 const post=async(path,body,auth=true)=>fetch(base+path,{method:'POST',headers:{origin:base,'Content-Type':'application/json',...(auth?{cookie}:{})},body:JSON.stringify(body)});
 const current=await (await get('/api/f1')).json();
-const answers={winner:'d1',second:'d2',third:'d3',pole:'d1',fastest:'d2',team:'t1',pitFirst:'t2'};
+const [d1,d2,d3]=current.config.f1.drivers.slice(0,3).map(d=>d.id), [t1,t2]=current.config.f1.teams.slice(0,2).map(t=>t.id);
+const answers={winner:d1,second:d2,third:d3,pole:d1,fastest:d2,team:t1,pitFirst:t2};
 test('F1 rejects anonymous submissions',async()=>assert.equal((await post('/api/f1',{answers,revision:current.revision},false)).status,401));
 test('F1 duplicate podium drivers rejected',async()=>assert.equal((await post('/api/f1',{answers:{...answers,second:'d1'},revision:current.revision})).status,422));
 test('F1 unregistered driver rejected',async()=>assert.equal((await post('/api/f1',{answers:{...answers,winner:'forged'},revision:current.revision})).status,422));

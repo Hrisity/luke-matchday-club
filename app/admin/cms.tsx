@@ -104,13 +104,18 @@ export default function Cms() {
         ),
       },
     });
-  const entrant = (kind: "drivers" | "teams", i: number, value: string) =>
+  const entrant = (
+    kind: "drivers" | "teams",
+    i: number,
+    field: "name" | "team" | "image",
+    value: string,
+  ) =>
     setConfig({
       ...config,
       f1: {
         ...config.f1,
         [kind]: config.f1[kind].map((v, n) =>
-          n === i ? { ...v, name: value } : v,
+          n === i ? { ...v, [field]: value } : v,
         ),
       },
     });
@@ -349,15 +354,21 @@ export default function Cms() {
                         names.
                       </p>
                       {config.f1[kind].map((v, i) => (
-                        <div className="entrant-row" key={v.id}>
+                        <div className={`entrant-row ${kind === "drivers" ? "driver-row" : ""}`} key={v.id}>
                           <label>
                             {kind === "drivers" ? "Driver" : "Team"} {i + 1}
                             <input
                               value={v.name}
                               maxLength={60}
-                              onChange={(e) => entrant(kind, i, e.target.value)}
+                              onChange={(e) => entrant(kind, i, "name", e.target.value)}
                             />
                           </label>
+                          {kind === "drivers" && (
+                            <>
+                              <label>Team<input value={v.team ?? ""} maxLength={60} onChange={(e) => entrant(kind, i, "team", e.target.value)} /></label>
+                              <label>Headshot URL<input value={v.image ?? ""} maxLength={500} onChange={(e) => entrant(kind, i, "image", e.target.value)} /></label>
+                            </>
+                          )}
                           <button
                             aria-label={`Remove ${v.name}`}
                             disabled={
@@ -396,6 +407,7 @@ export default function Cms() {
                                     kind === "drivers"
                                       ? "New driver"
                                       : "New team",
+                                  ...(kind === "drivers" ? { team: "", image: "" } : {}),
                                 },
                               ],
                             },

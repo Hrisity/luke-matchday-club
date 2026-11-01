@@ -50,6 +50,8 @@ export default function F1Game() {
     [...data.config.f1.drivers, ...data.config.f1.teams].find(
       (v) => v.id === key,
     )?.name || "Not selected";
+  const driver = (key: string) =>
+    data.config.f1.drivers.find((v) => v.id === key);
   const submit = async () => {
     setBusy(true);
     setError("");
@@ -126,6 +128,19 @@ export default function F1Game() {
                   <b>{f.key === "pitFirst" ? "+1 TIEBREAK PT" : "5 POINTS"}</b>
                 </span>
                 <span className="race-choice-title">{f.label}</span>
+                {f.kind === "driver" && (
+                  <span className="driver-preview" aria-live="polite">
+                    {driver(answers[f.key])?.image ? (
+                      <img src={driver(answers[f.key])!.image} alt="" />
+                    ) : (
+                      <span className="driver-preview-empty"><Flag size={22} /></span>
+                    )}
+                    <span>
+                      <b>{driver(answers[f.key])?.name || "Choose a driver"}</b>
+                      <small>{driver(answers[f.key])?.team || "Current 2026 grid"}</small>
+                    </span>
+                  </span>
+                )}
                 <select
                   aria-label={f.label}
                   value={answers[f.key]}
@@ -141,7 +156,7 @@ export default function F1Game() {
                     : data.config.f1.teams
                   ).map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.name}
+                      {v.name}{f.kind === "driver" && v.team ? ` · ${v.team}` : ""}
                     </option>
                   ))}
                 </select>
