@@ -33,6 +33,7 @@ export default function Cms() {
     [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false),
     [review, setReview] = useState(false),
+    [theme, setTheme] = useState<"luke" | "botb">("luke"),
     [loading, setLoading] = useState(true);
   const load = async (tenant = "") => {
     setLoading(true);
@@ -68,7 +69,14 @@ export default function Cms() {
   };
   useEffect(() => {
     load();
+    const saved = window.localStorage.getItem("luke-ui-theme");
+    if (saved === "botb" || saved === "luke") setTheme(saved);
   }, []);
+  const toggleTheme = () => {
+    const next = theme === "luke" ? "botb" : "luke";
+    setTheme(next);
+    window.localStorage.setItem("luke-ui-theme", next);
+  };
   const publish = async () => {
     setBusy(true);
     setError("");
@@ -123,12 +131,15 @@ export default function Cms() {
   const fromDate = (value: string) =>
     value ? new Date(value + "Z").toISOString() : "";
   return (
-    <main className="cms-shell">
+    <main className={`cms-shell ${theme === "botb" ? "theme-botb" : ""}`}>
       <header className="cms-header">
         <a href="/" className="brand">
           luke<span className="brand-star">✳</span>
         </a>
         <span>PARTNER GAME CMS</span>
+        <button className="cms-theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
+          <span /> {theme === "botb" ? "BOTB-inspired concept" : "Luke Matchprint"}
+        </button>
         <a className="secondary" href="/">
           <ArrowLeft size={16} />
           Back to clubhouse

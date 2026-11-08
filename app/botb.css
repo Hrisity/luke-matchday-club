@@ -136,3 +136,26 @@
   .theme-botb .fixture-info>span:last-child { display: none; }
   .theme-botb .dock-copy b { font-size: 12px; }
 }
+.cms-shell.theme-botb{--body:'Jost',Arial,sans-serif;--display:'Jost',Arial,sans-serif;--mono:'Jost',Arial,sans-serif;max-width:1200px;color:#333;background:#efefef;font:16px/1.5 var(--body)}
+.cms-shell.theme-botb .cms-header{padding:20px 0;border-bottom:1px solid #ddd;gap:20px}
+.cms-shell.theme-botb .cms-header>span{font:500 14px/22px var(--body);letter-spacing:0;color:#666}
+.cms-shell.theme-botb .cms-header .brand{font-family:'Jost',sans-serif;color:#171717}
+.cms-shell.theme-botb .cms-header .brand-star{color:#f28b2b}
+.cms-shell.theme-botb .cms-theme-switch{margin-left:auto;display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #171717;border-radius:5px;background:#171717;color:#fff;font:500 12px/18px var(--body)}
+.cms-shell.theme-botb .cms-theme-switch>span{width:7px;height:7px;border-radius:50%;background:#f28b2b}
+.cms-shell.theme-botb .page-title h1,.cms-shell.theme-botb .cms-rules h2,.cms-shell.theme-botb .cms-entrants h2,.cms-shell.theme-botb .cms-history h2,.cms-shell.theme-botb .cms-publish h2{font:700 30px/38px var(--display);letter-spacing:0;text-transform:uppercase;color:#333}
+.cms-shell.theme-botb .page-title p,.cms-shell.theme-botb .cms-entrants p,.cms-shell.theme-botb .cms-history p,.cms-shell.theme-botb .cms-publish p{font:400 16px/24px var(--body);color:#666}
+.cms-shell.theme-botb .cms-rules,.cms-shell.theme-botb .cms-access{border:0;border-radius:6px;background:#171717;color:#fff;padding:24px}
+.cms-shell.theme-botb .cms-rules p,.cms-shell.theme-botb .cms-access p{color:#ddd}
+.cms-shell.theme-botb .cms-toolbar{padding:16px 0;border-top:1px solid #ddd;border-bottom:1px solid #ddd}
+.cms-shell.theme-botb .tabs button{font:500 16px/22px var(--body);padding:10px 14px;border-radius:4px;color:#666}
+.cms-shell.theme-botb .tabs button.active{background:#171717;color:#fff}
+.cms-shell.theme-botb .cms-toolbar>label{font:500 14px/22px var(--body);color:#555}
+.cms-shell.theme-botb .cms-toolbar select,.cms-shell.theme-botb input,.cms-shell.theme-botb select{font:400 16px/24px var(--body);border:1px solid #ccc;border-radius:4px;background:#fff;color:#333;padding:10px}
+.cms-shell.theme-botb .cms-fixture,.cms-shell.theme-botb .cms-entrants>section,.cms-shell.theme-botb .cms-history{background:#fff;border:0;border-radius:8px;box-shadow:0 2px 6px #0000000d}
+.cms-shell.theme-botb .cms-fixture h3{font:600 14px/20px var(--body);letter-spacing:.5px;color:#666}
+.cms-shell.theme-botb .cms-label,.cms-shell.theme-botb .cms-fixture label,.cms-shell.theme-botb .entrant-row label{font:500 14px/22px var(--body);color:#555}
+.cms-shell.theme-botb .secondary{border:1px solid #333;border-radius:4px;padding:10px 18px;font:400 16px/24px 'Roboto',sans-serif;background:#fff}
+.cms-shell.theme-botb .primary{background:#f28b2b;color:#fff;border-radius:4px;padding:10px 24px;font:400 16px/24px 'Roboto',sans-serif}
+.cms-shell.theme-botb .cms-success{border-radius:4px;background:#eaf5e6;color:#245d2b;font:400 14px/22px var(--body)}
+@media(max-width:760px){.cms-shell.theme-botb .cms-header{flex-wrap:wrap}.cms-shell.theme-botb .cms-theme-switch{margin-left:0}.cms-shell.theme-botb .cms-fixture{padding:18px}.cms-shell.theme-botb .entrant-row{flex-wrap:wrap}.cms-shell.theme-botb .entrant-row>label{min-width:100%}}
