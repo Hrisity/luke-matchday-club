@@ -103,6 +103,24 @@
 .theme-botb .race-banner h2 { font-size: 28px; }
 .theme-botb .race-choice { border-radius: 8px; padding: 24px; background: #fff; }
 .theme-botb .race-choice select { font: 400 16px/24px var(--body); padding: 12px; }
+/* Keep the F1 surface inside the BOTB concept palette. */
+.theme-botb .race-game { --paper: #efefef; --panel: #fff; --ink: #333; --muted: #666; --green: #333; --lime: #f28b2b; --line: #ddd; }
+.theme-botb .race-banner { background: #171717; color: #fff; border-radius: 8px; }
+.theme-botb .race-banner .eyebrow { color: #f28b2b; }
+.theme-botb .race-deadline { color: #666; }
+.theme-botb .race-choice { background: #fff; border: 1px solid #e5e5e5; color: #333; }
+.theme-botb .race-choice-meta, .theme-botb .race-choice small, .theme-botb .race-actions p { color: #666; }
+.theme-botb .race-choice-title, .theme-botb .race-review h2 { color: #333; }
+.theme-botb .race-choice select { border-color: #ccc; background: #fff; color: #333; }
+.theme-botb .tiebreak-choice { background: #fff4e8; border-color: #f2c79d; }
+.theme-botb .race-receipt { background: #fff4e8; color: #333; }
+.theme-botb .race-review { background: #fff; border-color: #f2c79d; }
+.theme-botb .driver-grid { background: #f7f7f7; border-color: #ddd; }
+.theme-botb .driver-grid-heading { color: #666; }
+.theme-botb .driver-tile { background: #fff; border-color: #e5e5e5; }
+.theme-botb .driver-tile img, .theme-botb .driver-tile-placeholder, .theme-botb .driver-preview img, .theme-botb .driver-preview-empty { background: #f1f1f1; }
+.theme-botb .driver-tile-placeholder, .theme-botb .driver-preview-empty { color: #777; }
+.theme-botb .driver-tile small, .theme-botb .driver-preview small { color: #777; }
 @media (max-width: 1200px) {
   .theme-botb .main { padding: 24px 24px 0; }
   .theme-botb .topbar { padding: 0 24px; }
