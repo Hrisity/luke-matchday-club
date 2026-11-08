@@ -130,6 +130,7 @@ export default function Cms() {
   const dateValue = (date: string) => date.slice(0, 16);
   const fromDate = (value: string) =>
     value ? new Date(value + "Z").toISOString() : "";
+  const updateSports = (sports: GameConfig["sports"]) => setConfig({ ...config, sports });
   return (
     <main className={`cms-shell ${theme === "botb" ? "theme-botb" : ""}`}>
       <header className="cms-header">
@@ -166,6 +167,20 @@ export default function Cms() {
             </p>
             {subject ? (
               <code>{subject}</code>
+            ) : tab === "Other sports" ? (
+              <>
+                <section className="cms-rules"><Plus size={22} /><div><h2>Extend the competition</h2><p>Add sports without changing source code. Configure each sport before exposing it to players.</p></div></section>
+                <div className="cms-entrants cms-sports-list">
+                  {(config.sports ?? []).map((sport, i) => <section key={sport.id} className="cms-sport-card">
+                    <div className="cms-card-heading"><h2>{sport.name}</h2><button onClick={() => updateSports((config.sports ?? []).filter((_, n) => n !== i))}><Trash2 size={16} /></button></div>
+                    <label>Sport name<input value={sport.name} maxLength={60} onChange={(e) => updateSports((config.sports ?? []).map((s, n) => n === i ? { ...s, name: e.target.value } : s))} /></label>
+                    <label>Round title<input value={sport.title} maxLength={60} onChange={(e) => updateSports((config.sports ?? []).map((s, n) => n === i ? { ...s, title: e.target.value } : s))} /></label>
+                    <label>Scoring rules<textarea value={sport.rules} maxLength={500} rows={3} onChange={(e) => updateSports((config.sports ?? []).map((s, n) => n === i ? { ...s, rules: e.target.value } : s))} /></label>
+                    <label className="cms-checkbox"><input type="checkbox" checked={sport.enabled} onChange={(e) => updateSports((config.sports ?? []).map((s, n) => n === i ? { ...s, enabled: e.target.checked } : s))} /> Available to players</label>
+                  </section>)}
+                </div>
+                <button className="secondary" onClick={() => updateSports([...(config.sports ?? []), { id: crypto.randomUUID().replaceAll("-", "").slice(0, 12), name: "New sport", title: "New round", enabled: false, rules: "Configure scoring rules for this sport.", events: [] }])}><Plus size={16} /> Add sport</button>
+              </>
             ) : (
               <a href="/signin-with-chatgpt?return_to=/admin" target="_top">
                 Sign in with ChatGPT →
@@ -187,7 +202,7 @@ export default function Cms() {
       )}
       <div className="cms-toolbar">
         <div className="tabs">
-          {["Football", "Formula 1", "Publishing history"].map((t) => (
+          {["Football", "Formula 1", "Other sports", "Publishing history"].map((t) => (
             <button
               key={t}
               className={tab === t ? "active" : ""}

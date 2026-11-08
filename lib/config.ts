@@ -11,6 +11,14 @@ const unique = (v: { id: string }[]) =>
   new Set(v.map((x) => x.id)).size === v.length;
 export const configSchema = z
   .object({
+    sports: z.array(z.object({
+      id: z.string().regex(/^[a-zA-Z0-9_-]{1,40}$/),
+      name,
+      title: name,
+      enabled: z.boolean(),
+      rules: z.string().trim().max(500),
+      events: z.array(z.object({ id: z.string().regex(/^[a-zA-Z0-9_-]{1,40}$/), label: name, detail: z.string().trim().max(120) })).max(20).refine(unique, "Event IDs must be unique"),
+    }).refine((s) => s.name.length > 0)).max(12).refine(unique, "Sport IDs must be unique").default([]),
     football: z.object({
       title: name,
       fixtures: z
@@ -50,6 +58,7 @@ export const configSchema = z
   .strict();
 export type GameConfig = z.infer<typeof configSchema>;
 export const defaultConfig: GameConfig = {
+  sports: [],
   football: { title: "Matchweek 11", fixtures },
   f1: {
     title: "Luke Grand Prix · Demo",
