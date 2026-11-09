@@ -79,3 +79,9 @@ test("config rejects injected colours and invalid dates", () => {
   c.f1.locksAt = "not-a-date";
   assert.equal(configSchema.safeParse(c).success, false);
 });
+test("CMS sports configuration accepts a valid sport and rejects duplicate IDs", () => {
+  const sport = { id: "tennis", name: "Tennis", title: "Grand Slam", enabled: true, rules: "Winner 5 points", events: [{ id: "winner", label: "Tournament winner", detail: "Pick one" }] };
+  assert.equal(configSchema.safeParse({ ...defaultConfig, sports: [sport] }).success, true);
+  assert.equal(configSchema.safeParse({ ...defaultConfig, sports: [sport, sport] }).success, false);
+  assert.equal(configSchema.safeParse({ ...defaultConfig, sports: [{ ...sport, events: [{ ...sport.events[0], id: "bad id" }] }] }).success, false);
+});
