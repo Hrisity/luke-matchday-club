@@ -100,6 +100,7 @@ export default function Matchday() {
     [busy, setBusy] = useState(false),
     [menu, setMenu] = useState(false),
     [field, setField] = useState(""),
+    [password, setPassword] = useState(""),
     [formError, setFormError] = useState(""),
     [league, setLeague] = useState<League | null>(null),
     [theme, setTheme] = useState<"luke" | "botb">("luke"),
@@ -175,6 +176,19 @@ export default function Matchday() {
     setTheme(next);
     window.localStorage.setItem("luke-ui-theme", next);
     setToast(next === "botb" ? "Concept skin on — simply predict game rules unchanged." : "simply predict · dark skin restored.");
+  };
+  const demoLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setBusy(true);
+    setFormError("");
+    try {
+      const r = await fetch("/api/demo-login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: field.trim().toLowerCase(), password }) });
+      const d = (await r.json()) as { error?: string };
+      if (!r.ok) throw Error(d.error);
+      setPassword("");
+      setModal("");
+      await load();
+    } catch (e) { setFormError((e as Error).message); } finally { setBusy(false); }
   };
   const mutate = async (body: unknown) => {
     const r = await fetch("/api/game", {
@@ -871,10 +885,15 @@ export default function Matchday() {
             >
               Continue with ChatGPT <ArrowRight size={18} />
             </a>
+            <form className="demo-login" onSubmit={demoLogin}>
+              <strong>Presentation login</strong>
+              <input aria-label="Demo username" placeholder="Username: hrisi, luke, or samo" value={field} onChange={(e) => setField(e.target.value)} />
+              <input aria-label="Demo password" type="password" placeholder="Password: demo" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button className="secondary wide" disabled={busy}>Continue with demo account <ArrowRight size={18} /></button>
+              {formError && <p role="alert" className="form-error">{formError}</p>}
+            </form>
             <p className="fine-print">
-              This private preview uses ChatGPT sign-in. Native simply predict accounts
-              and partner SSO are planned for the production platform. Unsaved
-              preview picks reset on sign-in.
+              Use hrisi for CMS admin, luke for the player view, or samo for another player. ChatGPT sign-in remains available for platform integration.
             </p>
           </>
         ) : null}

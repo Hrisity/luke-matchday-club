@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export type ChatGPTUser = {
@@ -22,12 +23,21 @@ export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
   const userId = requestHeaders.get(USER_ID_HEADER);
   const email = requestHeaders.get(USER_EMAIL_HEADER);
-  if (!userId || !email) return null;
+  if (userId && email) {
+    return userFromValues(userId, email, requestHeaders.get(USER_FULL_NAME_HEADER), requestHeaders.get(USER_FULL_NAME_ENCODING_HEADER));
+  }
+  const demo = (await cookies()).get("simply_predict_demo_user")?.value;
+  if (demo && ["hrisi", "luke", "samo"].includes(demo)) {
+    const names = { hrisi: "Hrisi", luke: "Luke", samo: "Samo" } as const;
+    return { userId: demo, displayName: names[demo as keyof typeof names], email: `${demo}@simply-predict.demo`, fullName: names[demo as keyof typeof names] };
+  }
+  return null;
+}
 
-  const encodedFullName = requestHeaders.get(USER_FULL_NAME_HEADER);
+function userFromValues(userId: string, email: string, encodedFullName: string | null, encoding: string | null): ChatGPTUser {
   const fullName =
     encodedFullName &&
-    requestHeaders.get(USER_FULL_NAME_ENCODING_HEADER) === PERCENT_ENCODED_UTF8
+    encoding === PERCENT_ENCODED_UTF8
       ? safeDecodeURIComponent(encodedFullName)
       : null;
 
