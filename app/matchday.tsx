@@ -179,7 +179,7 @@ export default function Matchday() {
     const next = theme === "luke" ? "botb" : "luke";
     setTheme(next);
     window.localStorage.setItem("luke-ui-theme", next);
-    setToast(next === "botb" ? "Concept skin on — Predict game rules unchanged." : "Predict Matchprint skin restored.");
+    setToast(next === "botb" ? "Concept skin on — simply predict game rules unchanged." : "simply predict · dark skin restored.");
   };
   const mutate = async (body: unknown) => {
     const r = await fetch("/api/game", {
@@ -305,7 +305,7 @@ export default function Matchday() {
         <button
           className="brand-button"
           onClick={() => move("Matchday")}
-              aria-label="Predict home"
+              aria-label="simply predict home"
         >
           <Mark />
         </button>
@@ -382,7 +382,7 @@ export default function Matchday() {
             <span>
               <b>{data.user?.name || "Make yourself at home"}</b>
               <small>
-                {data.user ? "Your Predict account" : "Join the prediction club"}
+                {data.user ? "Your simply predict account" : "Join the prediction club"}
               </small>
             </span>
             <Settings2 size={17} />
@@ -406,7 +406,7 @@ export default function Matchday() {
           <div className="header-right">
             <button className="theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
               <span className="theme-switch-dot" />
-              {theme === "botb" ? "BOTB-inspired concept" : "Predict Matchprint"}
+              {theme === "botb" ? "BOTB-inspired concept" : "simply predict · dark"}
             </button>
             <span className="demo-badge">
               <span /> DEMO SEASON
@@ -887,7 +887,7 @@ export default function Matchday() {
                   </div>
                   <h2>Every great rivalry starts somewhere.</h2>
                   <p>
-                    Create your own corner of Predict, invite your friends,
+                    Create your own corner of simply predict, invite your friends,
                     <br />
                     and give the group chat something to talk about.
                   </p>
@@ -999,13 +999,13 @@ export default function Matchday() {
             <div>
               <button onClick={() => open("about")}>About this demo</button>
               <button onClick={() => open("privacy")}>Privacy</button>
-              <span>© 2026 Predict</span>
+              <span>© 2026 simply predict</span>
             </div>
           </footer>
         </main>
       </div>
       <dialog
-        aria-label="Predict clubhouse dialog"
+        aria-label="simply predict clubhouse dialog"
         ref={dialog}
         onCancel={() => setModal("")}
         onClick={(e) => {
@@ -1098,7 +1098,7 @@ export default function Matchday() {
               Continue with ChatGPT <ArrowRight size={18} />
             </a>
             <p className="fine-print">
-              This private preview uses ChatGPT sign-in. Native Predict accounts
+              This private preview uses ChatGPT sign-in. Native simply predict accounts
               and partner SSO are planned for the production platform. Unsaved
               preview picks reset on sign-in.
             </p>
@@ -1378,7 +1378,7 @@ export default function Matchday() {
             </span>
             <h2>For the love of the game.</h2>
             <p>
-              Predict is a prediction club for people who always have a feeling
+              simply predict is a prediction club for people who always have a feeling
               about the weekend.
             </p>
             <p>

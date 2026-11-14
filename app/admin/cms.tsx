@@ -144,7 +144,7 @@ export default function Cms() {
         </Link>
         <span>PARTNER GAME CMS</span>
         <button className="cms-theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
-          <span /> {theme === "botb" ? "BOTB-inspired concept" : "Predict Matchprint"}
+          <span /> {theme === "botb" ? "BOTB-inspired concept" : "simply predict · dark"}
         </button>
         <Link className="secondary" href="/">
           <ArrowLeft size={16} />
