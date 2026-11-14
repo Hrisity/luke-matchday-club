@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
@@ -68,9 +69,13 @@ export default function Cms() {
     }
   };
   useEffect(() => {
+    // Initial CMS hydration is intentionally triggered by the mount effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
     const saved = window.localStorage.getItem("luke-ui-theme");
-    if (saved === "botb" || saved === "luke") setTheme(saved);
+    if (saved === "botb" || saved === "luke") {
+      setTheme(saved);
+    }
   }, []);
   const toggleTheme = () => {
     const next = theme === "luke" ? "botb" : "luke";
@@ -134,17 +139,17 @@ export default function Cms() {
   return (
     <main className={`cms-shell ${theme === "botb" ? "theme-botb" : ""}`}>
       <header className="cms-header">
-        <a href="/" className="brand">
-          luke<span className="brand-star">✳</span>
-        </a>
+        <Link href="/" className="brand">
+          predict<span className="brand-star">✳</span>
+        </Link>
         <span>PARTNER GAME CMS</span>
         <button className="cms-theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
-          <span /> {theme === "botb" ? "BOTB-inspired concept" : "Luke Matchprint"}
+          <span /> {theme === "botb" ? "BOTB-inspired concept" : "Predict Matchprint"}
         </button>
-        <a className="secondary" href="/">
+        <Link className="secondary" href="/">
           <ArrowLeft size={16} />
           Back to clubhouse
-        </a>
+        </Link>
       </header>
       <div className="page-title">
         <span className="eyebrow">YOUR COMPETITION. YOUR CONTROL.</span>

@@ -85,7 +85,7 @@ function Team({
 function Mark() {
   return (
     <span className="brand">
-      luke<span className="brand-star">✳</span>
+      predict<span className="brand-star">✳</span>
     </span>
   );
 }
@@ -107,7 +107,7 @@ export default function Matchday() {
     [formError, setFormError] = useState(""),
     [league, setLeague] = useState<League | null>(null),
     [theme, setTheme] = useState<"luke" | "botb">("luke"),
-    [now, setNow] = useState(Date.now());
+    [now, setNow] = useState(() => Date.now());
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({}),
     pending = useRef<Set<Promise<unknown>>>(new Set()),
     dialog = useRef<HTMLDialogElement>(null),
@@ -130,13 +130,18 @@ export default function Matchday() {
     }
   }, []);
   useEffect(() => {
+    // Initial data hydration is intentionally triggered by the mount effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load();
     const id = setInterval(() => setNow(Date.now()), 30000);
     return () => clearInterval(id);
   }, [load]);
   useEffect(() => {
     const saved = window.localStorage.getItem("luke-ui-theme");
-    if (saved === "botb" || saved === "luke") setTheme(saved);
+    if (saved === "botb" || saved === "luke") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTheme(saved);
+    }
   }, []);
   useEffect(() => {
     if (toast) {
@@ -146,6 +151,7 @@ export default function Matchday() {
   }, [toast]);
   useEffect(() => {
     if (modal) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormError("");
       dialog.current?.showModal();
     } else dialog.current?.close();
@@ -173,7 +179,7 @@ export default function Matchday() {
     const next = theme === "luke" ? "botb" : "luke";
     setTheme(next);
     window.localStorage.setItem("luke-ui-theme", next);
-    setToast(next === "botb" ? "Concept skin on — Luke game rules unchanged." : "Luke Matchprint skin restored.");
+    setToast(next === "botb" ? "Concept skin on — Predict game rules unchanged." : "Predict Matchprint skin restored.");
   };
   const mutate = async (body: unknown) => {
     const r = await fetch("/api/game", {
@@ -299,7 +305,7 @@ export default function Matchday() {
         <button
           className="brand-button"
           onClick={() => move("Matchday")}
-          aria-label="Luke home"
+              aria-label="Predict home"
         >
           <Mark />
         </button>
@@ -376,7 +382,7 @@ export default function Matchday() {
             <span>
               <b>{data.user?.name || "Make yourself at home"}</b>
               <small>
-                {data.user ? "Your Luke account" : "Join the prediction club"}
+                {data.user ? "Your Predict account" : "Join the prediction club"}
               </small>
             </span>
             <Settings2 size={17} />
@@ -400,7 +406,7 @@ export default function Matchday() {
           <div className="header-right">
             <button className="theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>
               <span className="theme-switch-dot" />
-              {theme === "botb" ? "BOTB-inspired concept" : "Luke Matchprint"}
+              {theme === "botb" ? "BOTB-inspired concept" : "Predict Matchprint"}
             </button>
             <span className="demo-badge">
               <span /> DEMO SEASON
@@ -422,7 +428,7 @@ export default function Matchday() {
               aria-label={data.user ? "Your profile" : "Sign in"}
               onClick={() => open(data.user ? "profile" : "signin")}
             >
-              {data.user ? data.user.name.slice(0, 1) : "L"}
+              {data.user ? data.user.name.slice(0, 1) : "P"}
             </button>
           </div>
         </header>
@@ -881,7 +887,7 @@ export default function Matchday() {
                   </div>
                   <h2>Every great rivalry starts somewhere.</h2>
                   <p>
-                    Create your own corner of Luke, invite your friends,
+                    Create your own corner of Predict, invite your friends,
                     <br />
                     and give the group chat something to talk about.
                   </p>
@@ -993,13 +999,13 @@ export default function Matchday() {
             <div>
               <button onClick={() => open("about")}>About this demo</button>
               <button onClick={() => open("privacy")}>Privacy</button>
-              <span>© 2026 Luke</span>
+              <span>© 2026 Predict</span>
             </div>
           </footer>
         </main>
       </div>
       <dialog
-        aria-label="Luke clubhouse dialog"
+        aria-label="Predict clubhouse dialog"
         ref={dialog}
         onCancel={() => setModal("")}
         onClick={(e) => {
@@ -1092,7 +1098,7 @@ export default function Matchday() {
               Continue with ChatGPT <ArrowRight size={18} />
             </a>
             <p className="fine-print">
-              This private preview uses ChatGPT sign-in. Native Luke accounts
+              This private preview uses ChatGPT sign-in. Native Predict accounts
               and partner SSO are planned for the production platform. Unsaved
               preview picks reset on sign-in.
             </p>
@@ -1372,7 +1378,7 @@ export default function Matchday() {
             </span>
             <h2>For the love of the game.</h2>
             <p>
-              Luke is a prediction club for people who always have a feeling
+              Predict is a prediction club for people who always have a feeling
               about the weekend.
             </p>
             <p>

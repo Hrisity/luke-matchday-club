@@ -1,6 +1,6 @@
-# Luke — The prediction club
+# Predict — The prediction club
 
-A working, privately hosted first slice of the Luke master brief. Football picks for six fixtures (5 exact, 2 outcome, 2 first scorer), a Formula 1 prediction game, account-backed saved drafts, review and submission receipts, private league creation/joining, profile naming, labelled sample results/leaderboards, and a staff-only configurable Game CMS. The clubhouse also includes a reversible BOTB-inspired concept skin switch so partners can compare a high-contrast promotional direction with the Luke Matchprint skin; the alternate uses public visual cues and keeps the same game rules and data model.
+A working, privately hosted first slice of the Predict product brief. Football picks for six fixtures (5 exact, 2 outcome, 2 first scorer), a Formula 1 prediction game, account-backed saved drafts, review and submission receipts, private league creation/joining, profile naming, labelled sample results/leaderboards, and a staff-only configurable Game CMS. The clubhouse also includes a reversible BOTB-inspired concept skin switch while keeping the same game rules and data model.
 
 **This is not yet the full commercial platform.** See `docs/IMPLEMENTATION_MATRIX.md` for implemented and outstanding work. No live fixtures, payment service, partner SSO or admin console is implied.
 

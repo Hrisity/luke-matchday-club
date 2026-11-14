@@ -61,7 +61,7 @@ export const defaultConfig: GameConfig = {
   sports: [],
   football: { title: "Matchweek 11", fixtures },
   f1: {
-    title: "Luke Grand Prix · Demo",
+    title: "Predict Grand Prix · Demo",
     locksAt: "2026-11-07T12:00:00Z",
     drivers: [
       { id: "russell", name: "George Russell", team: "Mercedes", image: "https://media.formula1.com/image/upload/c_lfill,w_440/q_auto/d_common:f1:2026:fallback:driver:2026fallbackdriverright.webp/v1740000001/common/f1/2026/mercedes/georus01/2026mercedesgeorus01right.webp" },

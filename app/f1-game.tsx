@@ -27,7 +27,7 @@ export default function F1Game() {
     [busy, setBusy] = useState(false),
     [loading, setLoading] = useState(true),
     [review, setReview] = useState(false),
-    [now, setNow] = useState(Date.now());
+    [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     fetch("/api/f1")
       .then(async (r) => {
