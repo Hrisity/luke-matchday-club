@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { cookies } from "next/headers";
+import { env } from "cloudflare:workers";
 import { redirect } from "next/navigation";
 
 export type ChatGPTUser = {
@@ -26,7 +27,7 @@ export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   if (userId && email) {
     return userFromValues(userId, email, requestHeaders.get(USER_FULL_NAME_HEADER), requestHeaders.get(USER_FULL_NAME_ENCODING_HEADER));
   }
-  const demo = (await cookies()).get("simply_predict_demo_user")?.value;
+  const demo = env.DEMO_AUTH_ENABLED === "true" ? (await cookies()).get("simply_predict_demo_user")?.value : undefined;
   if (demo && ["hrisi", "luke", "samo"].includes(demo)) {
     const names = { hrisi: "Hrisi", luke: "Luke", samo: "Samo" } as const;
     return { userId: demo, displayName: names[demo as keyof typeof names], email: `${demo}@simply-predict.demo`, fullName: names[demo as keyof typeof names] };

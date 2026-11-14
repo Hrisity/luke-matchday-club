@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { env } from "cloudflare:workers";
 const accounts = { hrisi: { password: "demo", name: "Hrisi" }, luke: { password: "demo", name: "Luke" }, samo: { password: "demo", name: "Samo" } } as const;
 export async function POST(req: Request) {
+  if (env.DEMO_AUTH_ENABLED !== "true") return Response.json({ error: "Demo login is enabled on GitHub staging only." }, { status: 404 });
   const body = z.object({ username: z.enum(["hrisi", "luke", "samo"]), password: z.string().max(64) }).safeParse(await req.json().catch(() => null));
   if (!body.success || accounts[body.data.username].password !== body.data.password) return Response.json({ error: "Use one of the demo accounts and the demo password." }, { status: 401 });
   (await cookies()).set("simply_predict_demo_user", body.data.username, { httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: 60 * 60 * 12 });
