@@ -1,4 +1,4 @@
-# Predict client integration
+# Predict integration
 
 ## Demo
 

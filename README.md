@@ -1,4 +1,4 @@
-# Predict — The prediction club
+# Predict
 
 A working, privately hosted first slice of the Predict product brief. Football picks for six fixtures (5 exact, 2 outcome, 2 first scorer), a Formula 1 prediction game, account-backed saved drafts, review and submission receipts, private league creation/joining, profile naming, labelled sample results/leaderboards, and a staff-only configurable Game CMS. The clubhouse also includes a reversible BOTB-inspired concept skin switch while keeping the same game rules and data model.
 
