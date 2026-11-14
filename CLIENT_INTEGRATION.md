@@ -1,4 +1,4 @@
-# Luke Matchday Club client integration
+# Predict client integration
 
 ## Demo
 
@@ -10,7 +10,7 @@ Health check: `/api/health`
 
 ## Integration model
 
-Partners can use the hosted UI, embed the game routes in their member area, or consume the API from a custom frontend. Each partner is isolated by a tenant ID. CMS access is granted through `staff_memberships`; players are identified by the authenticated account.
+Partners can use the hosted Predict UI, embed the game routes in their member area, or consume the API from a custom frontend. Each partner is isolated by a tenant ID. CMS access is granted through `staff_memberships`; players are identified by the authenticated account.
 
 ## Core endpoints
 
