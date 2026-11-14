@@ -5,7 +5,7 @@ import { env, reset, signIn, failDatabase } from "./support/runtime.mjs";
 import { GET, POST } from "../app/api/results/route.ts";
 import { POST as gamePost } from "../app/api/game/route.ts";
 import { POST as racePost } from "../app/api/f1/route.ts";
-import { POST as adminPost } from "../app/api/admin/route.ts";
+import { GET as adminGet, POST as adminPost } from "../app/api/admin/route.ts";
 import { defaultConfig } from "../lib/config.ts";
 const tenant = "luke-owned",
   base = "http://localhost",
@@ -304,4 +304,19 @@ test("submitted entries remain pending until results are published", async () =>
   const row = (await read()).data.rows[0];
   assert.equal(row.points, 0);
   assert.equal(row.settled, 0);
+});
+
+
+test("operator grant admits only the configured account and default tenant", async () => {
+  env.CMS_ADMIN_USER_ID = "site-owner";
+  signIn("site-owner");
+  const response = await adminGet(new Request(base + "/api/admin"));
+  assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).memberships, [{ tenant, role: "admin" }]);
+  assert.equal((await adminGet(new Request(base + "/api/admin?tenant=other"))).status, 403);
+  signIn("unrelated-player");
+  assert.equal((await adminGet(new Request(base + "/api/admin"))).status, 403);
+  signIn("site-owner");
+  delete env.CMS_ADMIN_USER_ID;
+  assert.equal((await adminGet(new Request(base + "/api/admin"))).status, 403);
 });

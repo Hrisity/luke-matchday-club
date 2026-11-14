@@ -73,5 +73,6 @@ export function reset() {
   ])
     sqlite.exec("DELETE FROM " + t);
   fail = false;
+  delete env.CMS_ADMIN_USER_ID;
   signIn(null);
 }

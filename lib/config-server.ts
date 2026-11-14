@@ -26,7 +26,13 @@ export async function staffTenants(user: string) {
     )
     .bind(user)
     .all();
-  return rows.results as { tenant: string; role: string }[];
+  const memberships = rows.results as { tenant: string; role: string }[];
+  // Operator-managed grant; never accept an account ID from a request parameter.
+  if (env.CMS_ADMIN_USER_ID && user === env.CMS_ADMIN_USER_ID &&
+      !memberships.some((m) => m.tenant === TENANT)) {
+    memberships.push({ tenant: TENANT, role: "admin" });
+  }
+  return memberships;
 }
 export async function canManage(user: string, tenant: string) {
   return (await staffTenants(user)).some((m) => m.tenant === tenant);

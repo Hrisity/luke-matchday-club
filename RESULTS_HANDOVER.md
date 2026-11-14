@@ -27,3 +27,7 @@ Use Node 24 (the test database uses node:sqlite).
 The integration harness executes the real migrations and route handlers, mocking only authentication and the Cloudflare binding with SQLite. Tests cover the full CMS publish → prediction submission → lock → verified results → standings journey, corrections, withdrawals, permissions, concurrency, private leagues and historical rounds. They do not replace browser tests or production D1 load testing. Existing legacy HTTP suites depend on old demo dates and are not included in the deterministic test command.
 
 At larger scale, paginate entry reads and materialise aggregate scores; the current implementation computes totals from submitted rows on each request. No production results or customer data are seeded by tests.
+
+## Operator-managed CMS access
+
+The Sites runtime secret `CMS_ADMIN_USER_ID` grants the exact authenticated account admin access to `luke-owned` only. Other tenant staff continue to use `staff_memberships`. The account identifier is kept out of source control. Change or remove this runtime variable and redeploy to transfer or revoke this operator grant. Site viewing permissions remain independent from CMS permissions.
