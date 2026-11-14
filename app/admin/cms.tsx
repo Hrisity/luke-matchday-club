@@ -140,7 +140,7 @@ export default function Cms() {
     <main className={`cms-shell ${theme === "botb" ? "theme-botb" : ""}`}>
       <header className="cms-header">
         <Link href="/" className="brand">
-          predict<span className="brand-star">✳</span>
+          simply predict<span className="brand-star">✳</span>
         </Link>
         <span>PARTNER GAME CMS</span>
         <button className="cms-theme-switch" onClick={toggleTheme} aria-pressed={theme === "botb"}>

@@ -85,7 +85,7 @@ function Team({
 function Mark() {
   return (
     <span className="brand">
-      predict<span className="brand-star">✳</span>
+      simply predict<span className="brand-star">✳</span>
     </span>
   );
 }

@@ -1,4 +1,4 @@
-# Predict integration
+# simply predict integration
 
 ## Demo
 
