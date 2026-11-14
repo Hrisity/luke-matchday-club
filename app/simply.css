@@ -1,62 +1,76 @@
 /* The default skin is deliberately scoped; BOTB keeps its existing styles. */
 :is(.app-shell,.cms-shell):not(.theme-botb) {
   --paper:#101113; --panel:#1b1d20; --ink:#f8f8ef; --muted:#b2b5b8;
-  --green:#ffe34b; --lime:#ffe34b; --line:#35373a;
+  --green:#efd260; --lime:#efd260; --line:#303236;
+  --display:"DM Sans",Arial,sans-serif;
   background:var(--paper); color:var(--ink); color-scheme:dark;
 }
 body:has(.cms-shell:not(.theme-botb)) { background:#101113; }
-:is(.app-shell,.cms-shell):not(.theme-botb) :is(.brand,.brand-star) { color:#ffe34b; }
-:is(.app-shell,.cms-shell):not(.theme-botb) .brand { font-family:var(--display); font-size:32px; letter-spacing:-.8px; white-space:nowrap; }
-:is(.app-shell,.cms-shell):not(.theme-botb) .brand-star { font-size:24px; }
+:is(.app-shell,.cms-shell):not(.theme-botb) :is(.brand,.brand-star) { color:#efd260; }
+:is(.app-shell,.cms-shell):not(.theme-botb) .brand { font-family:var(--display); font-size:22px; letter-spacing:-1px; white-space:nowrap; }
+:is(.app-shell,.cms-shell):not(.theme-botb) .brand-star { font-size:18px; }
 .app-shell:not(.theme-botb) :is(.sidebar,.topbar) { background:#101113; border-color:#35373a; }
 .app-shell:not(.theme-botb) :is(.workspace-label,.brand-caption,.crumb,.season-meta,.section-eyebrow,.side-help,.nav-link,.sport-link,.profile small,.footer,.data-note,.fine-print) { color:#b2b5b8; }
-.app-shell:not(.theme-botb) :is(.nav-link.active,.sport-link.selected) { background:#ffe34b; color:#101113; border-radius:24px; border-color:#ffe34b; }
+.app-shell:not(.theme-botb) :is(.nav-link.active,.sport-link.selected) { background:#252620; color:#efd260; border-radius:8px; border-color:#efd260; }
 .app-shell:not(.theme-botb) :is(.nav-link,.sport-link):hover { background:#303236; color:#fff; }
-.app-shell:not(.theme-botb) :is(.club-note,.avatar,.header-avatar,.demo-badge,.theme-switch) { background:#24262a; border-color:#45474a; color:#ffe34b; }
-.app-shell:not(.theme-botb) :is(.green-dot,.live-dot,.demo-dot,.progress-bar>span) { background:#ffe34b; }
-.app-shell:not(.theme-botb) .hero { height:420px; border-radius:24px; background:#17181b; border:1px solid #35373a; }
-.app-shell:not(.theme-botb) .hero>img { inset:0; width:100%; height:100%; opacity:.2; filter:grayscale(1); }
+.app-shell:not(.theme-botb) :is(.club-note,.avatar,.header-avatar,.demo-badge,.theme-switch) { background:#24262a; border-color:#45474a; color:#efd260; }
+.app-shell:not(.theme-botb) :is(.green-dot,.live-dot,.demo-dot,.progress-bar>span) { background:#efd260; }
+.app-shell:not(.theme-botb) .hero { height:340px; border-radius:12px; background:#17181b; border:1px solid #35373a; }
+.app-shell:not(.theme-botb) .hero>img { inset:0; width:100%; height:100%; opacity:.32; filter:grayscale(1); }
 .app-shell:not(.theme-botb) .hero-shade { background:linear-gradient(90deg,#17181b 5%,#17181bba 65%,#17181b50); }
-.app-shell:not(.theme-botb) .hero-content { padding:44px; }
-.app-shell:not(.theme-botb) .hero h1 { font-size:clamp(64px,6.5vw,100px); line-height:.9; text-transform:uppercase; letter-spacing:-2px; margin:22px 0; color:#fff; }
-.app-shell:not(.theme-botb) .hero h1 span { color:#ffe34b; }
-.app-shell:not(.theme-botb) .hero-eyebrow { color:#ffe34b; font-size:10px; letter-spacing:2px; }
+.app-shell:not(.theme-botb) .hero-content { padding:38px 40px; }
+.app-shell:not(.theme-botb) .hero h1 { font-size:clamp(36px,4vw,56px); line-height:1.08; text-transform:none; font-weight:650; letter-spacing:-2px; margin:18px 0; color:#fff; }
+.app-shell:not(.theme-botb) .hero h1 span { color:#efd260; }
+.app-shell:not(.theme-botb) .hero-eyebrow { color:#efd260; font-size:10px; letter-spacing:2px; }
 .app-shell:not(.theme-botb) .hero p { color:#d2d3d4; font-size:15px; }
-.app-shell:not(.theme-botb) .hero-link { background:#ffe34b; color:#101113; border-radius:30px; padding:14px 24px; font-size:13px; font-weight:700; }
-.app-shell:not(.theme-botb) .hero-stamp { color:#ffe34b; border-color:#ffe34b; transform:rotate(12deg); background:#24262a; border-radius:50%; }
+.app-shell:not(.theme-botb) .hero-link { background:#efd260; color:#101113; border-radius:8px; padding:14px 24px; font-size:13px; font-weight:700; }
+.app-shell:not(.theme-botb) .hero-stamp { display:none; color:#efd260; border-color:#efd260; transform:rotate(12deg); background:#24262a; border-radius:50%; }
 .app-shell:not(.theme-botb) .photo-credit { color:#b2b5b8; }
-.app-shell:not(.theme-botb) .matchday-ticker { background:#ffe34b; color:#101113; border:0; border-radius:18px; margin-top:18px; padding:24px; }
-.app-shell:not(.theme-botb) .matchday-ticker :is(b,small,svg,.issue) { color:#101113; }
-.app-shell:not(.theme-botb) :is(.section-heading h2,.rail-heading h2,.page-title h1) { color:#fff; text-transform:uppercase; letter-spacing:-.7px; }
-.app-shell:not(.theme-botb) .section-heading h2 { font-size:38px; }
-:is(.app-shell,.cms-shell):not(.theme-botb) :is(.fixture-card,.standings-card,.league-card,.result-card,.race-choice,.driver-grid,.cms-fixture,.cms-entrants>section,.cms-history,.modal,.receipt-paper,.notification-card,.race-review) { background:#1b1d20; color:#f8f8ef; border:1px solid #35373a; border-radius:18px; }
+.app-shell:not(.theme-botb) .matchday-ticker { background:#1b1d20; color:#f8f8ef; border:1px solid #35373a; border-radius:12px; margin-top:16px; padding:22px 24px; }
+.app-shell:not(.theme-botb) .matchday-ticker :is(b,small,svg,.issue) { color:#d2d3d4; }
+.app-shell:not(.theme-botb) .matchday-ticker .issue { color:#efd260; }
+.app-shell:not(.theme-botb) :is(.section-heading h2,.rail-heading h2,.page-title h1) { color:#fff; text-transform:none; letter-spacing:-.6px; }
+.app-shell:not(.theme-botb) .section-heading h2 { font-size:26px; font-weight:650; }
+:is(.app-shell,.cms-shell):not(.theme-botb) :is(.fixture-card,.standings-card,.league-card,.result-card,.race-choice,.driver-grid,.cms-fixture,.cms-entrants>section,.cms-history,.modal,.receipt-paper,.notification-card,.race-review) { background:#1b1d20; color:#f8f8ef; border:1px solid #35373a; border-radius:12px; }
 .app-shell:not(.theme-botb) :is(.fixture-top,.first-scorer,.submit-dock,.driver-preview,.driver-tile,.league-promo,.race-banner,.race-receipt,.invite-box,.modal-note) { background:#24262a; color:#f8f8ef; border-color:#35373a; }
 .app-shell:not(.theme-botb) :is(.fixture-top,.fixture-info,.completion,.winner-summary,.winner-summary small,.team small,.race-deadline,.race-choice-meta,.race-choice small,.race-actions p,.driver-grid-heading,.driver-tile small,.driver-preview small,.eyebrow,.dock-copy>span) { color:#b2b5b8; }
 .app-shell:not(.theme-botb) :is(.scoreframe,.score-compartment,.first-options button,.tabs button,.search-box) { background:#101113; color:#fff; border-color:#45474a; }
-.app-shell:not(.theme-botb) :is(.first-options button.selected,.tabs button.active) { background:#ffe34b; color:#101113; border-color:#ffe34b; }
-.app-shell:not(.theme-botb) :is(.driver-preview img,.driver-preview-empty,.driver-tile img,.driver-tile-placeholder) { background:#35373a; color:#ffe34b; }
+.app-shell:not(.theme-botb) :is(.first-options button.selected,.tabs button.active) { background:#efd260; color:#101113; border-color:#efd260; }
+.app-shell:not(.theme-botb) :is(.driver-preview img,.driver-preview-empty,.driver-tile img,.driver-tile-placeholder) { background:#35373a; color:#efd260; }
 :is(.app-shell,.cms-shell):not(.theme-botb) :is(input,select,textarea,.text-input) { background:#101113; color:#fff; border:1px solid #53565b; border-radius:8px; }
-:is(.app-shell,.cms-shell):not(.theme-botb) .primary { background:#ffe34b; color:#101113; border-radius:28px; font-weight:700; }
-:is(.app-shell,.cms-shell):not(.theme-botb) .secondary { color:#ffe34b; border:1px solid #67634a; border-radius:28px; background:transparent; }
-:is(.app-shell,.cms-shell):not(.theme-botb) :is(button,a,input,select,textarea):focus-visible { outline:3px solid #ffe34b; outline-offset:3px; }
-.app-shell:not(.theme-botb) :is(.race-banner,.tiebreak-choice,.league-promo) { border:1px solid #67634a; border-radius:18px; }
-.app-shell:not(.theme-botb) :is(.race-banner .eyebrow,.fixture-check,.heading-dot,.club-note svg) { color:#ffe34b; }
+:is(.app-shell,.cms-shell):not(.theme-botb) .primary { background:#efd260; color:#101113; border-radius:8px; font-weight:700; }
+:is(.app-shell,.cms-shell):not(.theme-botb) .secondary { color:#efd260; border:1px solid #67634a; border-radius:8px; background:transparent; }
+:is(.app-shell,.cms-shell):not(.theme-botb) :is(button,a,input,select,textarea):focus-visible { outline:3px solid #efd260; outline-offset:3px; }
+.app-shell:not(.theme-botb) :is(.race-banner,.tiebreak-choice,.league-promo) { border:1px solid #67634a; border-radius:12px; }
+.app-shell:not(.theme-botb) :is(.race-banner .eyebrow,.fixture-check,.heading-dot,.club-note svg) { color:#efd260; }
 .app-shell:not(.theme-botb) :is(table,thead,tbody,tr,th,td) { background:transparent; color:#f8f8ef; border-color:#35373a; }
-.app-shell:not(.theme-botb) .toast { background:#ffe34b; color:#101113; border-radius:14px; }
+.app-shell:not(.theme-botb) .toast { background:#efd260; color:#101113; border-radius:14px; }
 .app-shell:not(.theme-botb) :is(.first-scorer,.fixture-top,.league-promo,.standings-card,.club-note) :is(p,small,span) { color:#bfc1c4; }
 .app-shell:not(.theme-botb) .first-options button:disabled { opacity:.65; }
 .app-shell:not(.theme-botb) .first-options button.selected { color:#101113; }
-.app-shell:not(.theme-botb) .fixture-card.is-complete { box-shadow:inset 3px 0 #ffe34b; }
-.app-shell:not(.theme-botb) .theme-switch-dot { background:#ffe34b; }
-.cms-shell:not(.theme-botb) :is(.cms-access,.cms-rules,.cms-success) { background:#24262a; color:#ffe34b; border-color:#535047; border-radius:16px; }
+.app-shell:not(.theme-botb) .fixture-card.is-complete { box-shadow:inset 3px 0 #efd260; }
+.app-shell:not(.theme-botb) .theme-switch-dot { background:#efd260; }
+.cms-shell:not(.theme-botb) :is(.cms-access,.cms-rules,.cms-success) { background:#24262a; color:#efd260; border-color:#535047; border-radius:16px; }
 .cms-shell:not(.theme-botb) :is(p,label,.cms-header>span,.cms-fixture h3) { color:#b2b5b8; }
-.cms-shell:not(.theme-botb) :is(.page-title h1,h2) { color:#fff; text-transform:uppercase; }
-.cms-shell:not(.theme-botb) .tabs button.active { background:#ffe34b; color:#101113; border-radius:24px; }
+.cms-shell:not(.theme-botb) :is(.page-title h1,h2) { color:#fff; text-transform:none; }
+.cms-shell:not(.theme-botb) .tabs button.active { background:#efd260; color:#101113; border-radius:24px; }
 .cms-shell:not(.theme-botb) textarea { width:100%; font:inherit; padding:12px; }
+.app-shell:not(.theme-botb) :is(.rail-heading h2,.league-promo h2,.race-banner h2,.race-choice-title) { font-size:24px; line-height:1.25; font-weight:600; letter-spacing:-.5px; }
+.app-shell:not(.theme-botb) :is(.club-note h3,.rules-card h3) { font-size:16px; line-height:1.4; }
+.app-shell:not(.theme-botb) .hero-eyebrow { letter-spacing:1.2px; }
+.app-shell:not(.theme-botb) :is(.hero-stamp,.photo-credit,.brand-caption) { display:none; }
+.app-shell:not(.theme-botb) .brand-button { padding:0; margin:8px 0 12px; }
+.app-shell:not(.theme-botb) .brand-star { margin-left:4px; }
+.app-shell:not(.theme-botb) :is(.nav-link,.sport-link) { border-radius:8px; }
+.app-shell:not(.theme-botb) .theme-switch { font:500 11px var(--body); letter-spacing:0; border-radius:6px; padding:9px 12px; color:#d2d3d4; }
+.app-shell:not(.theme-botb) .submit-dock { border:1px solid #35373a; box-shadow:0 -8px 32px #0003; border-radius:10px; }
+.app-shell:not(.theme-botb) .fixture-card.is-complete { box-shadow:none; border-color:#65604b; }
+.app-shell:not(.theme-botb) .toast { background:#24262a; color:#f8f8ef; border:1px solid #65604b; }
+.cms-shell:not(.theme-botb) :is(.page-title h1,h2) { font-size:28px; line-height:1.25; letter-spacing:-.6px; }
 @media(max-width:760px) {
- .app-shell:not(.theme-botb) .hero { height:390px; }
+ .app-shell:not(.theme-botb) .hero { height:330px; }
  .app-shell:not(.theme-botb) .hero-content { padding:32px 24px; }
- .app-shell:not(.theme-botb) .hero h1 { font-size:64px; }
+ .app-shell:not(.theme-botb) .hero h1 { font-size:40px; letter-spacing:-1.4px; }
  .app-shell:not(.theme-botb) .hero-stamp { display:none; }
  .app-shell:not(.theme-botb) .matchday-ticker { padding:18px; }
  .cms-shell:not(.theme-botb) .cms-header { flex-wrap:wrap; }
