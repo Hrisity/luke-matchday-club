@@ -187,7 +187,8 @@ export default function Matchday() {
       if (!r.ok) throw Error(d.error);
       setPassword("");
       setModal("");
-      await load();
+      setBusy(false);
+      void load();
     } catch (e) { setFormError((e as Error).message); } finally { setBusy(false); }
   };
   const mutate = async (body: unknown) => {
