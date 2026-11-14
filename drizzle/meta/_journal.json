@@ -15,6 +15,13 @@
       "when": 1793460575370,
       "tag": "0001_omniscient_synch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1794616504399,
+      "tag": "0002_tough_cammi",
+      "breakpoints": true
     }
   ]
 }

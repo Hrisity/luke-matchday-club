@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import CompetitionResults from "../competition-results";
 import {
   ArrowLeft,
   ArrowRight,
@@ -207,7 +208,7 @@ export default function Cms() {
       )}
       <div className="cms-toolbar">
         <div className="tabs">
-          {["Football", "Formula 1", "Other sports", "Publishing history"].map((t) => (
+          {["Football", "Formula 1", "Other sports", "Results & scoring", "Publishing history"].map((t) => (
             <button
               key={t}
               className={tab === t ? "active" : ""}
@@ -453,6 +454,8 @@ export default function Cms() {
                   ))}
                 </div>
               </>
+            ) : tab === "Results & scoring" ? (
+              <CompetitionResults key={data.tenant} admin tenant={data.tenant} />
             ) : (
               <section className="cms-history">
                 <h2>Published revisions</h2>
@@ -480,7 +483,7 @@ export default function Cms() {
               </section>
             )}
           </fieldset>
-          {access && tab !== "Publishing history" && (
+          {access && tab !== "Publishing history" && tab !== "Results & scoring" && (
             <div className="cms-publish">
               {review ? (
                 <>

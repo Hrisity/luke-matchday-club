@@ -99,3 +99,16 @@ export const racePicks = sqliteTable(
   },
   (t) => [primaryKey({ columns: [t.tenant, t.user, t.round] })],
 );
+
+export const roundResults = sqliteTable(
+  "round_results",
+  {
+    tenant: text("tenant").notNull(),
+    revision: integer("revision").notNull(),
+    version: integer("version").notNull(),
+    payload: text("payload").notNull(),
+    actor: text("actor").notNull(),
+    published: text("published").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.tenant, t.revision, t.version] })],
+);

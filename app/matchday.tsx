@@ -22,8 +22,6 @@ import {
   Copy,
   Menu,
   LockKeyhole,
-  Search,
-  ArrowUp,
   ArrowDown,
   LoaderCircle,
   CheckCircle2,
@@ -33,12 +31,12 @@ import {
   emptyPick,
   validatePick,
   isLocked,
-  sampleTable,
   type Pick,
   type Fixture,
 } from "../lib/game";
 import { defaultConfig, type GameConfig } from "../lib/config";
 import F1Game from "./f1-game";
+import CompetitionResults from "./competition-results";
 type Page = "Matchday" | "Leaderboard" | "My leagues" | "Results" | "Formula 1";
 type League = { id: string; name: string; code: string; count: number };
 type Receipt = { receipt: string; submitted: string; snapshot: string };
@@ -101,8 +99,6 @@ export default function Matchday() {
     [toast, setToast] = useState(""),
     [busy, setBusy] = useState(false),
     [menu, setMenu] = useState(false),
-    [period, setPeriod] = useState("Season"),
-    [search, setSearch] = useState(""),
     [field, setField] = useState(""),
     [formError, setFormError] = useState(""),
     [league, setLeague] = useState<League | null>(null),
@@ -168,7 +164,6 @@ export default function Matchday() {
   const move = (p: Page) => {
     setPage(p);
     setMenu(false);
-    setSearch("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const open = (m: string) => {
@@ -573,42 +568,7 @@ export default function Matchday() {
                   </p>
                 </section>
                 <aside className="right-rail">
-                  <section className="standings-card">
-                    <div className="rail-heading">
-                      <span className="eyebrow">THE ONES TO CATCH</span>
-                      <Trophy size={18} />
-                    </div>
-                    <h2>Top of the table.</h2>
-                    <div className="table-subtitle">
-                      Season leaderboard <span>SAMPLE</span>
-                    </div>
-                    <div className="mini-standings">
-                      {sampleTable.slice(0, 5).map((p, i) => (
-                        <div className="mini-row" key={p.name}>
-                          <span className="rank">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <span
-                            className="player-avatar"
-                            style={{ background: p.color }}
-                          >
-                            {p.initials}
-                          </span>
-                          <span className="player-name">{p.name}</span>
-                          <b>
-                            {p.points}
-                            <small>PTS</small>
-                          </b>
-                        </div>
-                      ))}
-                    </div>
-                    <button
-                      className="rail-link"
-                      onClick={() => move("Leaderboard")}
-                    >
-                      See the full leaderboard <ArrowRight size={17} />
-                    </button>
-                  </section>
+                  <CompetitionResults compact />
                   <section className="league-promo">
                     <div className="mini-pitch" aria-hidden="true">
                       <div />
@@ -720,108 +680,7 @@ export default function Matchday() {
               </div>
             </>
           ) : page === "Leaderboard" ? (
-            <>
-              <PageTitle
-                eyebrow="A LITTLE HEALTHY COMPETITION"
-                title="Big calls. Bigger bragging rights."
-                text="A season of good instincts, last-minute goals, and friendly rivalries."
-              />
-              <section className="page-panel">
-                <div className="panel-toolbar">
-                  <div className="tabs">
-                    {["Season", "Matchweek 10"].map((t) => (
-                      <button
-                        className={period === t ? "active" : ""}
-                        key={t}
-                        onClick={() => setPeriod(t)}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                  <label className="search">
-                    <Search size={17} />
-                    <input
-                      placeholder="Find a player"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                  </label>
-                </div>
-                <div className="sample-notice">
-                  Demo leaderboard · Illustrative players and scores. Your
-                  predictions do not change these sample rankings.
-                </div>
-                <div className="leaderboard-table">
-                  <div className="leaderboard-row table-head">
-                    <span>RANK</span>
-                    <span>PLAYER</span>
-                    <span className="exact-col">EXACT SCORES</span>
-                    <span>POINTS</span>
-                  </div>
-                  {[...sampleTable]
-                    .sort((a, b) =>
-                      period === "Season"
-                        ? b.points - a.points
-                        : b.exact - a.exact,
-                    )
-                    .filter((p) =>
-                      p.name.toLowerCase().includes(search.toLowerCase()),
-                    )
-                    .map((p, i) => (
-                      <div className="leaderboard-row" key={p.name}>
-                        <span className="rank-cell">
-                          {String(sampleTable.indexOf(p) + 1).padStart(2, "0")}
-                          <span className={p.change > 0 ? "up" : "down"}>
-                            {p.change > 0 ? (
-                              <ArrowUp size={12} />
-                            ) : p.change < 0 ? (
-                              <ArrowDown size={12} />
-                            ) : (
-                              <Minus size={12} />
-                            )}
-                          </span>
-                        </span>
-                        <span className="leaderboard-name">
-                          <span
-                            className="player-avatar"
-                            style={{ background: p.color }}
-                          >
-                            {p.initials}
-                          </span>
-                          <b>{p.name}</b>
-                          {i === 0 && !search && <Trophy size={17} />}
-                        </span>
-                        <span className="exact-col">
-                          {period === "Season"
-                            ? p.exact
-                            : Math.floor(p.exact / 5)}
-                        </span>
-                        <strong>
-                          {period === "Season"
-                            ? p.points
-                            : Math.floor(p.points / 5)}
-                        </strong>
-                      </div>
-                    ))}
-                  {!sampleTable.some((p) =>
-                    p.name.toLowerCase().includes(search.toLowerCase()),
-                  ) && (
-                    <div className="empty-small">
-                      No players found for “{search}”.
-                    </div>
-                  )}
-                </div>
-                <div className="panel-foot">
-                  <span>
-                    Ranked by points, exact scores, then first-scorer hits.
-                  </span>
-                  <button className="text-link" onClick={() => open("rules")}>
-                    Tie-break rules <ArrowUpRight size={15} />
-                  </button>
-                </div>
-              </section>
-            </>
+            <CompetitionResults />
           ) : page === "My leagues" ? (
             <>
               <PageTitle
@@ -902,94 +761,9 @@ export default function Matchday() {
               )}
             </>
           ) : page === "Results" ? (
-            <>
-              <PageTitle
-                eyebrow="THE FINAL WHISTLE"
-                title="Some calls age beautifully."
-                text="See how the points add up with a completed example round."
-              />
-              <div className="results-overview">
-                <span>
-                  <Flag size={19} />
-                  MATCHWEEK 10 · DEMO RESULTS
-                </span>
-                <strong>
-                  35 <small>/ 42 PTS</small>
-                </strong>
-                <span>
-                  5 exact scores <span className="green-dot" /> 4 first-scorer
-                  hits
-                </span>
-              </div>
-              <div className="results-grid">
-                {fixtures.map((f, i) => {
-                  const results = [
-                    { home: 2, away: 1, first: "HOME" },
-                    { home: 3, away: 0, first: "HOME" },
-                    { home: 2, away: 2, first: "AWAY" },
-                    { home: 1, away: 0, first: "HOME" },
-                    { home: 0, away: 0, first: "NONE" },
-                    { home: 1, away: 2, first: "AWAY" },
-                    { home: 1, away: 1, first: "HOME" },
-                    { home: 0, away: 2, first: "AWAY" },
-                  ] as Pick[];
-                  const picks = results.map(
-                    (r, j) =>
-                      ({ ...r, first: j === 2 ? "HOME" : r.first }) as Pick,
-                  );
-                  picks[5] = { home: 2, away: 3, first: "HOME" };
-                  picks[6] = { home: 2, away: 2, first: "HOME" };
-                  picks[7] = { home: 1, away: 3, first: "AWAY" };
-                  const r = results[i],
-                    p = picks[i];
-                  const exact = p.home === r.home && p.away === r.away;
-                  const points =
-                    (exact ? 5 : 2) + (p.first === r.first ? 2 : 0);
-                  return (
-                    <div className="result-card" key={f.id}>
-                      <div className="fixture-top">
-                        <span>
-                          MATCH {String(i + 1).padStart(2, "0")}{" "}
-                          <span>· FULL TIME</span>
-                        </span>
-                        <span className="points-pill">+{points} PTS</span>
-                      </div>
-                      <div className="result-match">
-                        <span>
-                          <Team code={f.h} color={f.hc} />
-                          {f.home}
-                        </span>
-                        <strong>
-                          {r.home} <span>:</span> {r.away}
-                        </strong>
-                        <span>
-                          <Team code={f.a} color={f.ac} />
-                          {f.away}
-                        </span>
-                      </div>
-                      <div className="result-bottom">
-                        <span>
-                          Example pick:{" "}
-                          <b>
-                            {p.home}–{p.away}
-                          </b>
-                        </span>
-                        <span>
-                          {exact ? <Check size={14} /> : <Goal size={14} />}{" "}
-                          {exact ? "Exact score" : "Correct outcome"}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="data-note">
-                These are illustrative results and example predictions, not real
-                match outcomes or your own points.
-              </p>
-            </>
+            <CompetitionResults />
           ) : (
-            <F1Game />
+            <><F1Game /><CompetitionResults initialSport="f1" /></>
           )}
           <footer className="footer">
             <span>
@@ -1371,6 +1145,7 @@ export default function Matchday() {
             </button>
           </>
         ) : null}
+        {modal === "league" && league && <CompetitionResults league={league.id} />}
         {modal === "about" ? (
           <>
             <span className="modal-kicker">
@@ -1383,8 +1158,7 @@ export default function Matchday() {
             </p>
             <p>
               This working preview includes saved predictions, submission
-              receipts, profiles, and private league membership. Fixtures,
-              results and leaderboard players are clearly labelled examples.
+              receipts, profiles, and private league membership. Results are entered by staff and submitted predictions determine the standings.
             </p>
             <p>
               Live sports data, native identity, partner SSO, client and
